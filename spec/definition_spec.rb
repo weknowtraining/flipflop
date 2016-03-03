@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Flip::Definition do
+describe FlipFlop::Definition do
 
-  subject { Flip::Definition.new :the_key, description: "The description" }
+  subject { FlipFlop::Definition.new :the_key, description: "The description" }
 
   [:key, :name, :to_s].each do |method|
     its(method) { should == :the_key }
@@ -12,7 +12,7 @@ describe Flip::Definition do
   its(:options) { should == { description: "The description" } }
 
   context "without description specified" do
-    subject { Flip::Definition.new :the_key }
+    subject { FlipFlop::Definition.new :the_key }
     its(:description) { should == "The key." }
   end
 

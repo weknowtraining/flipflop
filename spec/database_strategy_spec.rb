@@ -1,9 +1,9 @@
 require "spec_helper"
 
-describe Flip::DatabaseStrategy do
+describe FlipFlop::DatabaseStrategy do
 
   let(:definition) { double("definition", key: "one") }
-  let(:strategy) { Flip::DatabaseStrategy.new(model_klass) }
+  let(:strategy) { FlipFlop::DatabaseStrategy.new(model_klass) }
   let(:model_klass) do
     class Sample
       attr_accessor :key
@@ -14,8 +14,8 @@ describe Flip::DatabaseStrategy do
     end
 
     Class.new do
-      extend Flip::Cacheable
-      extend Flip::Declarable
+      extend FlipFlop::Cacheable
+      extend FlipFlop::Declarable
       feature :one
       feature :two, description: "Second one."
       feature :three, default: true

@@ -2,7 +2,7 @@ require "spec_helper"
 
 # Perhaps this is silly, but it provides some
 # coverage to an important base class.
-describe Flip::AbstractStrategy do
+describe FlipFlop::AbstractStrategy do
 
   its(:name) { should == "abstract" }
   its(:description) { should == "" }

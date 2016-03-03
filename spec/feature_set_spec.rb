@@ -1,19 +1,19 @@
 require "spec_helper"
 
-class NullStrategy < Flip::AbstractStrategy
+class NullStrategy < FlipFlop::AbstractStrategy
   def knows?(d); false; end
 end
 
-class TrueStrategy < Flip::AbstractStrategy
+class TrueStrategy < FlipFlop::AbstractStrategy
   def knows?(d); true; end
   def on?(d); true; end
 end
 
-describe Flip::FeatureSet do
+describe FlipFlop::FeatureSet do
 
   let :feature_set_with_null_strategy do
-    Flip::FeatureSet.new.tap do |s|
-      s << Flip::Definition.new(:feature)
+    FlipFlop::FeatureSet.new.tap do |s|
+      s << FlipFlop::Definition.new(:feature)
       s.add_strategy NullStrategy
     end
   end
@@ -26,15 +26,15 @@ describe Flip::FeatureSet do
 
   describe ".instance" do
     it "returns a singleton instance" do
-      Flip::FeatureSet.instance.should equal(Flip::FeatureSet.instance)
+      FlipFlop::FeatureSet.instance.should equal(FlipFlop::FeatureSet.instance)
     end
     it "can be reset" do
-      instance_before_reset = Flip::FeatureSet.instance
-      Flip::FeatureSet.reset
-      Flip::FeatureSet.instance.should_not equal(instance_before_reset)
+      instance_before_reset = FlipFlop::FeatureSet.instance
+      FlipFlop::FeatureSet.reset
+      FlipFlop::FeatureSet.instance.should_not equal(instance_before_reset)
     end
     it "can be reset multiple times without error" do
-      2.times { Flip::FeatureSet.reset }
+      2.times { FlipFlop::FeatureSet.reset }
     end
   end
 

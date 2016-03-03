@@ -1,12 +1,12 @@
 require "spec_helper"
 
-describe Flip::Declarable do
+describe FlipFlop::Declarable do
 
   let!(:model_class) do
     Class.new do
-      extend Flip::Declarable
+      extend FlipFlop::Declarable
 
-      strategy Flip::DeclarationStrategy
+      strategy FlipFlop::DeclarationStrategy
       default false
 
       feature :one
@@ -15,7 +15,7 @@ describe Flip::Declarable do
     end
   end
 
-  subject { Flip::FeatureSet.instance }
+  subject { FlipFlop::FeatureSet.instance }
 
   describe "the .on? class method" do
     context "with default set to false" do

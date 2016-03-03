@@ -1,0 +1,70 @@
+/* FlipFlop */
+
+.flipflop {
+  margin: 0;
+}
+
+.flipflop h1 {
+  color:#666666;
+  font-size: 229%;
+  line-height: 44.928px;
+  margin: 13.5px 0;
+}
+
+.flipflop th.name, .flipflop th.description, .flipflop th.status {
+  visibility: hidden;
+}
+
+.flipflop td.name {
+  font-family: Monaco, sans-serif;
+  font-weight: bold;
+}
+
+.flipflop td.name, .flipflop td.description {
+  vertical-align: top;
+}
+
+.flipflop th {
+  font-weight: normal;
+  text-align: left;
+  vertical-align: top;
+}
+
+.flipflop th .description {
+  font-weight: normal;
+  display: block;
+  font-size: 80%;
+}
+
+.flipflop th, .flipflop td {
+  padding: 5px 10px;
+  width: 160px;
+  height: 40px;
+}
+
+.flipflop td.off, .flipflop td.on, .flipflop td.pass {
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.flipflop td.off {
+  background-color: #fbb;
+}
+
+.flipflop td.on {
+  background-color: #cfc;
+}
+
+.flipflop td.pass {
+  background-color: #eef;
+}
+
+.flipflop form {
+  display: inline;
+}
+
+.flipflop form input[type=submit] {
+  font-size: 80%;
+  padding: 2px 5px;
+  margin: 0;
+}

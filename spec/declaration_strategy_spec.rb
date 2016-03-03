@@ -1,14 +1,14 @@
 require "spec_helper"
 
-describe Flip::DeclarationStrategy do
+describe FlipFlop::DeclarationStrategy do
 
   def definition(default)
-    Flip::Definition.new :feature, default: default
+    FlipFlop::Definition.new :feature, default: default
   end
 
   describe "#knows?" do
     it "does not know definition with no default specified" do
-      subject.knows?(Flip::Definition.new :feature).should be false
+      subject.knows?(FlipFlop::Definition.new :feature).should be false
     end
     it "does not know definition with default of nil" do
       subject.knows?(definition(nil)).should be false
@@ -21,8 +21,8 @@ describe Flip::DeclarationStrategy do
     end
   end
 
-  describe "#on? for Flip::Definition" do
-    subject { Flip::DeclarationStrategy.new.on? definition(default) }
+  describe "#on? for FlipFlop::Definition" do
+    subject { FlipFlop::DeclarationStrategy.new.on? definition(default) }
     [
       { default: true, result: true },
       { default: false, result: false },

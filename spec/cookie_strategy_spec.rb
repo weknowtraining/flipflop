@@ -7,7 +7,7 @@ class ControllerWithCookieStrategy
   def self.before_filter(_); end
   def self.after_filter(_); end
   def cookies; cookie_jar; end
-  include Flip::CookieStrategy::Loader
+  include FlipFlop::CookieStrategy::Loader
 end
 
 def cookie_jar
@@ -16,7 +16,7 @@ def cookie_jar
   ActionDispatch::Cookies::CookieJar.build(request)
 end
 
-describe Flip::CookieStrategy do
+describe FlipFlop::CookieStrategy do
 
   let(:cookies) do
     cookie_jar.tap do |jar|
@@ -25,7 +25,7 @@ describe Flip::CookieStrategy do
     end
   end
   let(:strategy) do
-    Flip::CookieStrategy.new.tap do |s|
+    FlipFlop::CookieStrategy.new.tap do |s|
       s.stub(:cookies) { cookies }
     end
   end
@@ -82,36 +82,36 @@ describe Flip::CookieStrategy do
 
 end
 
-describe Flip::CookieStrategy::Loader do
+describe FlipFlop::CookieStrategy::Loader do
 
   it "adds filters when included in controller" do
     ControllerWithoutCookieStrategy.tap do |klass|
-      klass.should_receive(:before_filter).with(:flip_cookie_strategy_before)
-      klass.should_receive(:after_filter).with(:flip_cookie_strategy_after)
-      klass.send :include, Flip::CookieStrategy::Loader
+      klass.should_receive(:before_filter).with(:flipflop_cookie_strategy_before)
+      klass.should_receive(:after_filter).with(:flipflop_cookie_strategy_after)
+      klass.send :include, FlipFlop::CookieStrategy::Loader
     end
   end
 
   describe "filter methods" do
-    let(:strategy) { Flip::CookieStrategy.new }
+    let(:strategy) { FlipFlop::CookieStrategy.new }
     let(:controller) { ControllerWithCookieStrategy.new }
-    describe "#flip_cookie_strategy_before" do
+    describe "#flipflop_cookie_strategy_before" do
       it "passes controller cookies to CookieStrategy" do
         controller.should_receive(:cookies).and_return(strategy.cookie_name(:test) => "true")
         expect {
-          controller.flip_cookie_strategy_before
+          controller.flipflop_cookie_strategy_before
         }.to change {
           [ strategy.knows?(:test), strategy.on?(:test) ]
         }.from([false, false]).to([true, true])
       end
     end
-    describe "#flip_cookie_strategy_after" do
+    describe "#flipflop_cookie_strategy_after" do
       before do
-        Flip::CookieStrategy.cookies = { strategy.cookie_name(:test) => "true" }
+        FlipFlop::CookieStrategy.cookies = { strategy.cookie_name(:test) => "true" }
       end
       it "passes controller cookies to CookieStrategy" do
         expect {
-          controller.flip_cookie_strategy_after
+          controller.flipflop_cookie_strategy_after
         }.to change {
           [ strategy.knows?(:test), strategy.on?(:test) ]
         }.from([true, true]).to([false, false])
