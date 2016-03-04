@@ -6,7 +6,7 @@ describe Flipflop::CookieStrategy do
   def create_cookie_jar
     env = Rack::MockRequest.env_for("/example")
     request = ActionDispatch::TestRequest.new(env)
-    
+
     method = ActionDispatch::Cookies::CookieJar.method(:build)
     if method.arity == 2 # Rails 5.0
       method.call(request, {})
