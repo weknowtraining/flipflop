@@ -111,7 +111,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "on", first("td.status").text
-          assert_equal "on", first("td[data-strategy=cookie] input.btn-primary[type=submit]").value
+          assert_equal "on", first("td[data-strategy=cookie] input.active[type=submit]").value
         end
       end
 
@@ -122,7 +122,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "off", first("td.status").text
-          assert_equal "off", first("td[data-strategy=cookie] input.btn-primary[type=submit]").value
+          assert_equal "off", first("td[data-strategy=cookie] input.active[type=submit]").value
         end
       end
 
@@ -137,7 +137,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "off", first("td.status").text
-          refute has_selector?("td[data-strategy=cookie] input.btn-primary[type=submit]")
+          refute has_selector?("td[data-strategy=cookie] input.active[type=submit]")
         end
       end
     end
@@ -150,7 +150,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "on", first("td.status").text
-          assert_equal "on", first("td[data-strategy=active-record] input.btn-primary[type=submit]").value
+          assert_equal "on", first("td[data-strategy=active-record] input.active[type=submit]").value
         end
       end
 
@@ -161,7 +161,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "off", first("td.status").text
-          assert_equal "off", first("td[data-strategy=active-record] input.btn-primary[type=submit]").value
+          assert_equal "off", first("td[data-strategy=active-record] input.active[type=submit]").value
         end
       end
 
@@ -176,7 +176,7 @@ describe Flipflop do
 
         within("tr[data-feature=world-domination]") do
           assert_equal "off", first("td.status").text
-          refute has_selector?("td[data-strategy=active-record] input.btn-primary[type=submit]")
+          refute has_selector?("td[data-strategy=active-record] input.active[type=submit]")
         end
       end
     end

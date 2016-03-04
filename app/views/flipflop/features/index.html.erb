@@ -15,7 +15,7 @@
     </thead>
     <tbody>
     <% @feature_set.features.each do |feature| -%>
-      <tr data-feature="<%= feature.name.dasherize %>">
+      <tr data-feature="<%= feature.name.dasherize.parameterize %>">
         <td class="status">
           <span class="<%= @feature_set.status(feature) -%>"><%= @feature_set.status(feature) -%></span>
         </td>
@@ -23,7 +23,7 @@
         <td class="description"><%= feature.description -%></td>
 
         <% @feature_set.strategies.each do |strategy| -%>
-          <td class="toggle" data-strategy="<%= strategy.name.parameterize %>">
+          <td class="toggle" data-strategy="<%= strategy.name.dasherize.parameterize %>">
             <div class="toolbar">
               <%= form_tag(@feature_set.switch_url(strategy, feature), method: :put) do -%>
                 <div class="group">
