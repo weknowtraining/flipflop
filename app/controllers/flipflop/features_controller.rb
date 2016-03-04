@@ -1,47 +1,36 @@
-module FlipFlop
+require "bootstrap"
+
+module Flipflop
   class FeaturesController < ApplicationController
+    layout "flipflop"
 
     def index
-      @p = FeaturesPresenter.new(FeatureSet.instance)
+      @feature_set = FeaturesPresenter.new(FeatureSet.instance)
     end
 
     class FeaturesPresenter
+      include Flipflop::Engine.routes.url_helpers
 
-      include FlipFlop::Engine.routes.url_helpers
+      extend Forwardable
+      delegate [:features, :strategies] => :@feature_set
 
       def initialize(feature_set)
         @feature_set = feature_set
       end
 
-      def strategies
-        @feature_set.strategies
+      def status(feature)
+        @feature_set.enabled?(feature.key) ? "on" : "off"
       end
 
-      def definitions
-        @feature_set.definitions
-      end
-
-      def status(definition)
-        @feature_set.on?(definition.key) ? "on" : "off"
-      end
-
-      def default_status(definition)
-        @feature_set.default_for(definition) ? "on" : "off"
-      end
-
-      def strategy_status(strategy, definition)
-        if strategy.knows? definition
-          strategy.on?(definition) ? "on" : "off"
+      def strategy_status(strategy, feature)
+        if strategy.knows?(feature.key)
+          strategy.enabled?(feature.key) ? "on" : "off"
         end
       end
 
-      def switch_url(strategy, definition)
-        feature_strategy_path \
-          definition.key,
-          strategy.name.underscore
+      def switch_url(strategy, feature)
+        feature_strategy_path(feature.key, strategy.object_id)
       end
-
     end
-
   end
 end

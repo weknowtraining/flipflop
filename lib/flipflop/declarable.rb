@@ -1,24 +1,17 @@
-module FlipFlop
+module Flipflop
   module Declarable
-
-    def self.extended(base)
-      FeatureSet.reset
+    class << self
+      def extended(base)
+        FeatureSet.reset!
+      end
     end
 
-    # Adds a new feature definition, creates predicate method.
-    def feature(key, options = {})
-      FeatureSet.instance << FlipFlop::Definition.new(key, options)
+    def feature(feature, *options)
+      FeatureSet.instance.add(Flipflop::FeatureDefinition.new(feature, *options))
     end
 
-    # Adds a strategy for determining feature status.
-    def strategy(strategy)
-      FeatureSet.instance.add_strategy strategy
+    def strategy(strategy, *options)
+      FeatureSet.instance.use(strategy.is_a?(Class) ? strategy.new(*options) : strategy)
     end
-
-    # The default response, boolean or a Proc to be called.
-    def default(default)
-      FeatureSet.instance.default = default
-    end
-
   end
 end

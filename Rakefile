@@ -1,11 +1,8 @@
-require 'bundler'
-Bundler::GemHelper.install_tasks
+require "bundler/gem_tasks"
+require "rake/testtask"
 
-desc "Run all tests"
-task :default => :spec
-
-desc "Run specs"
-task :spec do
-  command = "bundle exec rspec --color --format documentation spec/*_spec.rb"
-  system(command) || raise("specs returned non-zero code")
+Rake::TestTask.new do |test|
+  test.pattern = "test/**/*_test.rb"
 end
+
+task default: :test

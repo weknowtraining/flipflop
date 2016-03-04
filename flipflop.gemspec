@@ -4,7 +4,7 @@ require "flipflop/version"
 
 Gem::Specification.new do |s|
   s.name        = "flipflop"
-  s.version     = FlipFlop::VERSION
+  s.version     = Flipflop::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Paul Annesley", "Rolf Timmermans", "Jippe Holwerda"]
   s.email       = ["paul@annesley.cc", "rolftimmermans@voormedia.com", "jippeholwerda@voormedia.com"]
@@ -20,10 +20,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency("activesupport", ">= 3.0", "< 5")
   s.add_dependency("i18n")
-
-  s.add_development_dependency("rspec", "~> 2.5")
-  s.add_development_dependency("rspec-its")
-  s.add_development_dependency("rake")
-  s.add_development_dependency("rack")
-  s.add_development_dependency("actionpack", ">= 3.0", "< 5")
+  s.add_dependency("bootstrap", "~> 4.0.0.alpha3")
 end

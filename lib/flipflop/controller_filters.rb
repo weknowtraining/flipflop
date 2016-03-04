@@ -1,21 +1,19 @@
-module FlipFlop
-  module ControllerFilters
+module Flipflop
+  class Forbidden < StandardError
+    def initialize(feature)
+      super("Feature '#{feature}' required")
+    end
+  end
 
+  module ControllerFilters
     extend ActiveSupport::Concern
 
     module ClassMethods
-
-      def require_feature key, options = {}
-        before_filter options do
-          flipflop_feature_disabled key unless FlipFlop.on? key
+      def require_feature(feature, **options)
+        before_filter(options) do
+          raise Flipflop::Forbidden.new(feature) unless Flipflop.enabled?(feature)
         end
       end
-
     end
-
-    def flipflop_feature_disabled key
-      raise FlipFlop::Forbidden.new(key)
-    end
-
   end
 end

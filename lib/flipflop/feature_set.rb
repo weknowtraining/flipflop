@@ -1,57 +1,59 @@
-module FlipFlop
+require "thread"
+
+module Flipflop
   class FeatureSet
+    class << self
+      @@mutex = Mutex.new
 
-    def self.instance
-      @instance ||= self.new
+      def instance
+        @instance or @@mutex.synchronize do
+          @instance ||= new
+        end
+      end
+
+      def reset!
+        @@mutex.synchronize do
+          @instance = nil
+        end
+      end
+
+      private :new
     end
-
-    def self.reset
-      @instance = nil
-    end
-
-    # Sets the default for definitions which fall through the strategies.
-    # Accepts boolean or a Proc to be called.
-    attr_writer :default
 
     def initialize
-      @definitions = Hash.new { |_, k| raise "No feature declared with key #{k.inspect}" }
-      @strategies = Hash.new { |_, k| raise "No strategy named #{k}" }
-      @default = false
+      @features = Hash.new { |_, k| raise "Feature '#{k}' unknown" }
+      @strategies = Hash.new { |_, k| raise "Strategy '#{k}' unknown" }
     end
 
-    # Whether the given feature is switched on.
-    def on? key
-      d = @definitions[key]
-      @strategies.each_value { |s| return s.on?(d) if s.knows?(d) }
-      default_for d
+    def enabled?(feature)
+      @strategies.each_value do |strategy|
+        return strategy.enabled?(feature) if strategy.knows?(feature)
+      end
+      @features[feature].default
     end
 
-    # Adds a feature definition to the set.
-    def << definition
-      @definitions[definition.key] = definition
+    def add(feature)
+      @features[feature.key] = feature
     end
 
-    # Adds a strategy for determing feature status.
-    def add_strategy(strategy)
-      strategy = strategy.new if strategy.is_a? Class
-      @strategies[strategy.name] = strategy
+    def use(strategy)
+      @strategies[strategy.key] = strategy
     end
 
-    def strategy(klass)
-      @strategies[klass]
+    def feature(feature)
+      @features[feature]
     end
 
-    def default_for(definition)
-      @default.is_a?(Proc) ? @default.call(definition) : @default
+    def features
+      @features.values
     end
 
-    def definitions
-      @definitions.values
+    def strategy(strategy)
+      @strategies[strategy]
     end
 
     def strategies
       @strategies.values
     end
-
   end
 end

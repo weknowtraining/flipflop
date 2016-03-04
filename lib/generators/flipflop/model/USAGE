@@ -1,5 +1,5 @@
 Description:
-    Generates the Feature database model class for FlipFlop.
+    Generates the Feature database model class for Flipflop.
 
 Example:
     rails generate flipflop:model

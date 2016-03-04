@@ -1,22 +1,21 @@
-module FlipFlop
+module Flipflop
   class StrategiesController < ApplicationController
-
-    include FlipFlop::Engine.routes.url_helpers
+    include Flipflop::Engine.routes.url_helpers
 
     def update
-      strategy.switch! feature_key, turn_on?
-      redirect_to flipflop.features_url
+      strategy.switch!(feature_key, enable?)
+      redirect_to(flipflop.features_url)
     end
 
     def destroy
-      strategy.delete! feature_key
-      redirect_to flipflop.features_url
+      strategy.clear!(feature_key)
+      redirect_to(flipflop.features_url)
     end
 
     private
 
-    def turn_on?
-      params[:commit] == "Switch On"
+    def enable?
+      params[:commit].to_s.downcase.include?("on")
     end
 
     def feature_key
@@ -26,6 +25,5 @@ module FlipFlop
     def strategy
       FeatureSet.instance.strategy(params[:id])
     end
-
   end
 end

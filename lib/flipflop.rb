@@ -1,28 +1,24 @@
-# ActiveSupport dependencies.
-%w{
-  concern
-  inflector
-  core_ext/hash/reverse_merge
-  core_ext/object/blank
-}.each { |name| require "active_support/#{name}" }
+require "active_support/concern"
+require "active_support/inflector"
+require "active_support/core_ext/hash/reverse_merge"
+require "active_support/core_ext/object/blank"
+require "active_support/core_ext/object/try"
 
-# FlipFlop files.
-%w{
-  abstract_strategy
-  cacheable
-  controller_filters
-  cookie_strategy
-  database_strategy
-  declarable
-  declaration_strategy
-  definition
-  facade
-  feature_set
-  forbidden
-}.each { |name| require "flipflop/#{name}" }
+require "flipflop/controller_filters"
+require "flipflop/declarable"
+require "flipflop/feature_set"
+require "flipflop/feature_definition"
+require "flipflop/facade"
+
+require "flipflop/strategies/abstract_strategy"
+require "flipflop/strategies/active_record_strategy"
+require "flipflop/strategies/cookie_strategy"
+require "flipflop/strategies/default_strategy"
+require "flipflop/strategies/test_strategy"
 
 require "flipflop/engine" if defined?(Rails)
 
-module FlipFlop
+module Flipflop
   extend Facade
+  include Strategies
 end

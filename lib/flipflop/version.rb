@@ -1,3 +1,3 @@
-module FlipFlop
+module Flipflop
   VERSION = "1.0.2"
 end

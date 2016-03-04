@@ -1,18 +1,26 @@
-module FlipFlop
+module Flipflop
   module Facade
+    def enabled?(feature)
+      FeatureSet.instance.enabled?(feature)
+    end
+    alias_method :on?, :enabled?
 
-    def on?(feature)
-      FeatureSet.instance.on? feature
+    def reset!
+      FeatureSet.reset!
     end
 
-    def reset
-      FeatureSet.reset
+    private
+
+    def respond_to_missing?(method, include_private = false)
+      method[-1] == "?"
     end
 
-    def method_missing(method, *parameters)
-      super unless method =~ %r{^(.*)\?$}
-      FeatureSet.instance.on? $1.to_sym
+    def method_missing(method, *args)
+      if method[-1] == "?"
+        FeatureSet.instance.enabled?(method[0..-2].to_sym)
+      else
+        super
+      end
     end
-
   end
 end

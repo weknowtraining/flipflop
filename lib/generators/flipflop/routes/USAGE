@@ -1,5 +1,5 @@
 Description:
-    Add routes for the FlipFlop control page.
+    Add routes for the Flipflop dashboard.
 
 Example:
     rails generate flipflop:routes
