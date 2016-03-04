@@ -1,8 +1,7 @@
-<section class="flipflop container-fluid">
+<section class="flipflop">
   <h1>Feature Flipflop</h1>
-
-  <table class="table table-striped">
-    <thead class="thead-inverse">
+  <table>
+    <thead>
       <tr>
         <th></th>
         <th class="name">Feature</th>
@@ -17,43 +16,36 @@
     <tbody>
     <% @feature_set.features.each do |feature| -%>
       <tr data-feature="<%= feature.name.dasherize %>">
-        <td class="status" style="width: 2rem; font-size: 1.1rem;">
-          <span style="width: 2rem" class="label label-pill label-<%= @feature_set.status(feature) == "on" ? "success" : "default" -%>"><%= @feature_set.status(feature) -%></span>
+        <td class="status">
+          <span class="<%= @feature_set.status(feature) -%>"><%= @feature_set.status(feature) -%></span>
         </td>
-        <td class="name" style="min-width: 10rem; padding-top: 0.9rem;"><strong><%= feature.name.humanize -%></strong></td>
-        <td class="description" style="padding-top: 0.9rem; width: 20rem"><%= feature.description -%></td>
+        <td class="name"><%= feature.name.humanize -%></td>
+        <td class="description"><%= feature.description -%></td>
 
         <% @feature_set.strategies.each do |strategy| -%>
-          <td data-strategy="<%= strategy.name.dasherize %>" style="min-width: 10.5rem;">
-            <div class="btn-toolbar" role="toolbar">
+          <td class="toggle" data-strategy="<%= strategy.name.parameterize %>">
+            <div class="toolbar">
               <%= form_tag(@feature_set.switch_url(strategy, feature), method: :put) do -%>
-                <div class="btn-group btn-group-sm" role="group">
+                <div class="group">
                   <%= submit_tag "on",
                     type: "submit",
-                    class: ["btn", "btn-sm",
-                      @feature_set.strategy_status(strategy, feature) == "on" ? "btn-primary" : "btn-secondary",
-                    ],
+                    class: @feature_set.strategy_status(strategy, feature) == "on" ? "active" : nil,
                     disabled: strategy.switchable? ? false : true
                   -%>
 
                   <%= submit_tag "off",
                     type: "submit",
-                    class: ["btn", "btn-sm",
-                      @feature_set.strategy_status(strategy, feature) == "off" ? "btn-primary" : "btn-secondary",
-                    ],
+                    class: @feature_set.strategy_status(strategy, feature) == "off" ? "active" : nil,
                     disabled: strategy.switchable? ? false : true
                   -%>
                 </div>
               <% end -%>
 
               <% if strategy.switchable? -%>
-                <div class="btn-group btn-group-sm" role="group">
+                <div class="group">
                   <% unless @feature_set.strategy_status(strategy, feature).blank? -%>
                     <%= form_tag(@feature_set.switch_url(strategy, feature), method: :delete) do -%>
-                      <%= submit_tag "clear",
-                        type: "submit",
-                        class: ["btn", "btn-secondary", "btn-sm"]
-                      -%>
+                      <%= submit_tag "clear", type: "submit" -%>
                     <% end -%>
                   <% end -%>
                 </div>

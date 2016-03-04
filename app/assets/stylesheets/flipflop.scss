@@ -1,5 +1,62 @@
 @import "bootstrap";
 
-section {
+section.flipflop {
+  @extend .container-fluid;
   margin: 5rem 0 0;
+
+  table {
+    @extend .table;
+    @extend .table-striped;
+
+    thead {
+      @extend .thead-inverse;
+    }
+
+    tbody {
+      td.status {
+        width: 2rem;
+        font-size: 1.1rem;
+
+        span {
+          width: 2rem;
+          @extend .label;
+          @extend .label-pill;
+          &.on { @extend .label-success; }
+          &.off { @extend .label-default; }
+        }
+      }
+
+      td.name {
+        min-width: 11rem;
+        padding-top: 0.9rem;
+        font-weight: bold;
+      }
+
+      td.description {
+        min-width: 11rem;
+        padding-top: 0.9rem;
+      }
+
+      td.toggle {
+        min-width: 11rem;
+
+        div.toolbar {
+          @extend .btn-toolbar;
+          margin-left: 0;
+
+          div.group {
+            @extend .btn-group;
+            @extend .btn-group-sm;
+
+            input[type=submit] {
+              @extend .btn;
+              @extend .btn-sm;
+              &.active { @extend .btn-primary; }
+              &:not(.active) { @extend .btn-secondary; }
+            }
+          }
+        }
+      }
+    }
+  }
 }
