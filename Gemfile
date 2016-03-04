@@ -10,6 +10,6 @@ group :test do
   end
 
   gem "sqlite3", ">= 1.3"
-  gem "minitest", ">= 5.8"
+  gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
 end
