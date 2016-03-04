@@ -48,11 +48,11 @@ module Flipflop
         extend ActiveSupport::Concern
 
         included do
-          before_filter do
+          before_action do
             CookieStrategy.cookies = cookies
           end
           
-          after_filter do
+          after_action do
             CookieStrategy.cookies = nil
           end
         end

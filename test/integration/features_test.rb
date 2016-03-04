@@ -14,6 +14,7 @@ class TestApp
   end
 
   def create!
+    require "rails/generators"
     require "rails/generators/rails/app/app_generator"
     require "generators/flipflop/install/install_generator"
 
@@ -55,10 +56,17 @@ end
 describe Flipflop do
   include Capybara::DSL
 
+  def reload_constant(name)
+    ActiveSupport::Dependencies.remove_constant(name.to_s)
+    path = ActiveSupport::Dependencies.search_for_file(name.to_s.underscore).sub!(/\.rb\z/, "")
+    ActiveSupport::Dependencies.loaded.delete(path)
+    Object.const_get(name)
+  end
+
+
   before do
     TestApp.instance
-    ActiveSupport::Dependencies.remove_constant("Feature")
-    Feature
+    reload_constant(:Feature)
   end
 
   subject do

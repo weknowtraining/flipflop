@@ -1,4 +1,4 @@
-class CreateFeatures < ActiveRecord::Migration
+class CreateFeatures < ActiveRecord::Migration<%= Rails.version >= "5" ? "[#{ActiveRecord::Migration.current_version}]" : "" %>
   def change
     create_table :features do |t|
       t.string :key, null: false

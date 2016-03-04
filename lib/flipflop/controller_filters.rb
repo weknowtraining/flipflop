@@ -10,7 +10,7 @@ module Flipflop
 
     module ClassMethods
       def require_feature(feature, **options)
-        before_filter(options) do
+        before_action(options) do
           raise Flipflop::Forbidden.new(feature) unless Flipflop.enabled?(feature)
         end
       end

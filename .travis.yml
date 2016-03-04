@@ -5,6 +5,12 @@ rvm:
 - 2.2
 - 2.3.0
 - ruby-head
+env:
+- RAILS_VERSION=4.0
+- RAILS_VERSION=4.1
+- RAILS_VERSION=4.2
+- RAILS_VERSION=5.0.0.beta3
+- RAILS_VERSION=master
 matrix:
   allow_failures:
   - rvm: ruby-head

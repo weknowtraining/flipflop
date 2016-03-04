@@ -124,7 +124,7 @@ app/controllers/admin/features_controller.rb:
 
 ```ruby
 class Admin::FeaturesController < Flipflop::FeaturesController
-  before_filter :assert_authenticated_as_admin
+  before_action :assert_authenticated_as_admin
 end
 ```
 
@@ -132,7 +132,7 @@ app/controllers/admin/strategies_controller.rb:
 
 ```ruby
 class Admin::StrategiesController < Flipflop::StrategiesController
-  before_filter :assert_authenticated_as_admin
+  before_action :assert_authenticated_as_admin
 end
 ```
 

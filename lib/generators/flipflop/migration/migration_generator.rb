@@ -1,4 +1,5 @@
 require "rails/generators/migration"
+require "rails/generators/active_record"
 
 class Flipflop::MigrationGenerator < Rails::Generators::Base
   include Rails::Generators::Migration
