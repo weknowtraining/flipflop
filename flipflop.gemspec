@@ -19,6 +19,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency("activesupport", ">= 3.0", "< 5")
-  s.add_dependency("i18n")
   s.add_dependency("bootstrap", "~> 4.0.0.alpha3")
 end
