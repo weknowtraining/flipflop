@@ -10,6 +10,19 @@ describe Flipflop do
     end
   end
 
+  describe "config" do
+    before do
+      Flipflop.config do
+        feature :config_feature, default: true
+      end
+    end
+
+    it "should add features" do
+      assert_equal [:config_feature],
+        Flipflop::FeatureSet.instance.features.map(&:key)
+    end
+  end
+
   describe "enabled?" do
     it "returns true for enabled features" do
       assert_equal true, Flipflop.on?(:one)

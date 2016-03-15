@@ -1,5 +1,12 @@
 module Flipflop
   module Facade
+    def config
+      Class.new do
+        extend Declarable
+        class_eval(&Proc.new)
+      end
+    end
+
     def enabled?(feature)
       FeatureSet.instance.enabled?(feature)
     end
