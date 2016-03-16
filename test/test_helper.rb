@@ -1,6 +1,7 @@
 require "bundler/setup"
 require "flipflop"
-require "minitest"
+
+gem "minitest"
 require "minitest/autorun"
 
 # Who is setting this to true? :o
