@@ -2,8 +2,8 @@ source "https://rubygems.org"
 gemspec
 
 group :test do
-  case version = ENV["RAILS_VERSION"]
-  when "master", nil
+  version = ENV["RAILS_VERSION"] || "master"
+  if version == "master"
     gem "rails", github: "rails/rails"
   else
     gem "rails", "~> #{version}.0"
@@ -13,4 +13,8 @@ group :test do
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
   gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
+
+  if ENV["RAILS_VERSION"] == "4.0"
+    gem "minitest-rails", platform: :jruby
+  end
 end
