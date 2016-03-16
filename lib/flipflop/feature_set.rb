@@ -1,19 +1,17 @@
-require "thread"
-
 module Flipflop
   class FeatureSet
     class << self
       @@mutex = Mutex.new
 
-      def instance
-        @instance or @@mutex.synchronize do
-          @instance ||= new
+      def current
+        @current or @@mutex.synchronize do
+          @current ||= new
         end
       end
 
       def reset!
         @@mutex.synchronize do
-          @instance = nil
+          @current = nil
         end
       end
 
@@ -26,18 +24,29 @@ module Flipflop
     end
 
     def enabled?(feature)
-      @strategies.each_value do |strategy|
-        return strategy.enabled?(feature) if strategy.knows?(feature)
+      FeatureCache.current.fetch(feature) do
+        matching_strategy = @strategies.each_value.find do |strategy|
+          strategy.knows?(feature)
+        end
+
+        if matching_strategy
+          matching_strategy.enabled?(feature)
+        else
+          @features[feature].default
+        end
       end
-      @features[feature].default
     end
 
     def add(feature)
-      @features[feature.key] = feature
+      @@mutex.synchronize do
+        @features[feature.key] = feature
+      end
     end
 
     def use(strategy)
-      @strategies[strategy.key] = strategy
+      @@mutex.synchronize do
+        @strategies[strategy.key] = strategy
+      end
     end
 
     def feature(feature)

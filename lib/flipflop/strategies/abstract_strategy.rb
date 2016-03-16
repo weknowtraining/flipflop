@@ -1,6 +1,30 @@
 module Flipflop
   module Strategies
     class AbstractStrategy
+      module RequestInterceptor
+        class << self
+          def request
+            Thread.current.thread_variable_get(:flipflop_request)
+          end
+
+          def request=(request)
+            Thread.current.thread_variable_set(:flipflop_request, request)
+          end
+        end
+
+        extend ActiveSupport::Concern
+
+        included do
+          before_action do
+            RequestInterceptor.request = request
+          end
+
+          after_action do
+            RequestInterceptor.request = nil
+          end
+        end
+      end
+
       class << self
         def default_name
           return "anonymous" unless name
@@ -19,6 +43,8 @@ module Flipflop
       end
 
       def key
+        # TODO: Object ID changes if the feature definitions are reloaded. Maybe
+        # we can use the index instead?
         object_id.to_s
       end
 
@@ -44,6 +70,16 @@ module Flipflop
 
       def reset!
         raise NotImplementedError
+      end
+
+      protected
+
+      def request
+        RequestInterceptor.request or raise "Strategy required request, but was called outside request context."
+      end
+
+      def request?
+        !RequestInterceptor.request.nil?
       end
     end
   end

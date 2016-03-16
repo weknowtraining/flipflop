@@ -12,7 +12,7 @@ module Flipflop
       end
 
       def enabled?(feature)
-        FeatureSet.instance.feature(feature).default
+        FeatureSet.current.feature(feature).default
       end
     end
   end

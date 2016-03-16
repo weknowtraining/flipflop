@@ -2,6 +2,8 @@ module Flipflop
   class Engine < ::Rails::Engine
     isolate_namespace Flipflop
 
+    config.app_middleware.use Flipflop::FeatureCache::Middleware
+
     initializer "flipflop.configure_precompile_assets" do
       config.assets.precompile += ["flipflop.css"]
     end
@@ -10,8 +12,8 @@ module Flipflop
       ActiveSupport::Dependencies.load_missing_constant(Object, :Feature) rescue nil
     end
 
-    initializer "flipflop.load_cookie_strategy" do
-      ActionController::Base.send(:include, Flipflop::CookieStrategy::Loader)
+    initializer "flipflop.load_request_interceptor" do
+      ActionController::Base.send(:include, Flipflop::AbstractStrategy::RequestInterceptor)
     end
   end
 end

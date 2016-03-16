@@ -23,7 +23,7 @@ module Flipflop
     end
 
     def strategy
-      FeatureSet.instance.strategy(params[:id])
+      FeatureSet.current.strategy(params[:id])
     end
   end
 end

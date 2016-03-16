@@ -4,11 +4,11 @@ require "capybara/dsl"
 
 class TestApp
   class << self
-    def instance
-      @app ||= new.tap do |instance|
-        instance.create!
-        instance.load!
-        instance.migrate!
+    def current
+      @app ||= new.tap do |current|
+        current.create!
+        current.load!
+        current.migrate!
       end
     end
   end
@@ -65,12 +65,12 @@ describe Flipflop do
 
 
   before do
-    TestApp.instance
+    TestApp.current
     reload_constant(:Feature)
   end
 
   subject do
-    TestApp.instance
+    TestApp.current
   end
 
   describe "without features" do

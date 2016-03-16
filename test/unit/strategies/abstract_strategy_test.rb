@@ -1,6 +1,10 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
 describe Flipflop::AbstractStrategy do
+  after do
+    Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+  end
+
   describe "with defaults" do
     subject do
       Flipflop::AbstractStrategy.new
@@ -20,6 +24,39 @@ describe Flipflop::AbstractStrategy do
 
     it "should have unique key" do
       assert_match /^\d+$/, subject.key
+    end
+
+    describe "request" do
+      it "should return request" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
+        assert_equal 3, subject.send(:request)
+      end
+
+      it "should raise if request is missing" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+        assert_raises do
+          subject.send(:request)
+        end
+      end
+
+      it "should raise if request is missing in thread" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
+        assert_raises do
+          Thread.new { subject.send(:request) }.value
+        end
+      end
+    end
+
+    describe "request predicate" do
+      it "should return true if request is present" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
+        assert_equal true, subject.send(:request?)
+      end
+
+      it "should return false if request is missing" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+        assert_equal false, subject.send(:request?)
+      end
     end
   end
 

@@ -14,7 +14,7 @@ describe Flipflop::Declarable do
         extend Flipflop::Declarable
       end
 
-      assert_equal [], Flipflop::FeatureSet.instance.features
+      assert_equal [], Flipflop::FeatureSet.current.features
     end
   end
 
@@ -24,7 +24,7 @@ describe Flipflop::Declarable do
       subject.feature(:two, default: false)
 
       assert_equal [:one, :two],
-        Flipflop::FeatureSet.instance.features.map(&:key)
+        Flipflop::FeatureSet.current.features.map(&:key)
     end
 
     it "should append feature definition with default" do
@@ -32,7 +32,7 @@ describe Flipflop::Declarable do
       subject.feature(:two, default: false)
 
       assert_equal [true, false],
-        Flipflop::FeatureSet.instance.features.map(&:default)
+        Flipflop::FeatureSet.current.features.map(&:default)
     end
   end
 
@@ -46,7 +46,7 @@ describe Flipflop::Declarable do
       subject.strategy(strategies[0])
       subject.strategy(strategies[1])
 
-      assert_equal strategies, Flipflop::FeatureSet.instance.strategies.map(&:class)
+      assert_equal strategies, Flipflop::FeatureSet.current.strategies.map(&:class)
     end
 
     it "should append strategy objects" do
@@ -59,7 +59,7 @@ describe Flipflop::Declarable do
       subject.strategy(strategies[0])
       subject.strategy(strategies[1])
 
-      assert_equal strategies, Flipflop::FeatureSet.instance.strategies
+      assert_equal strategies, Flipflop::FeatureSet.current.strategies
     end
 
     it "should append strategy classes with options" do
@@ -69,7 +69,7 @@ describe Flipflop::Declarable do
       subject.strategy(strategy_class, name: "awesome strategy")
 
       assert_equal ["my strategy", "awesome strategy"],
-        Flipflop::FeatureSet.instance.strategies.map(&:name)
+        Flipflop::FeatureSet.current.strategies.map(&:name)
     end
   end
 end

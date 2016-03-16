@@ -6,9 +6,10 @@ require "active_support/core_ext/object/try"
 
 require "flipflop/controller_filters"
 require "flipflop/declarable"
-require "flipflop/feature_set"
-require "flipflop/feature_definition"
 require "flipflop/facade"
+require "flipflop/feature_cache"
+require "flipflop/feature_definition"
+require "flipflop/feature_set"
 
 require "flipflop/strategies/abstract_strategy"
 require "flipflop/strategies/active_record_strategy"

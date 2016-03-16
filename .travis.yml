@@ -4,7 +4,11 @@ rvm:
 - 2.1
 - 2.2
 - 2.3.0
+- jruby-1.7
+- jruby-9
+- rbx-2.2
 - ruby-head
+- jruby-head
 env:
 - RAILS_VERSION=4.0
 - RAILS_VERSION=4.1
@@ -27,7 +31,7 @@ matrix:
     env: RAILS_VERSION=master
   allow_failures:
   - rvm: ruby-head
-  - rvm: rbx-2
+  - rvm: jruby-head
 notifications:
   email: false
   slack:

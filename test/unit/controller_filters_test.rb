@@ -33,7 +33,7 @@ describe Flipflop::ControllerFilters do
 
       it "should allow action with feature" do
         subject.send(:require_feature, :test)
-        Flipflop::FeatureSet.instance.strategies.first.switch!(:test, true)
+        Flipflop::FeatureSet.current.strategies.first.switch!(:test, true)
         assert_equal 200, subject.action(:index).call({}).first
       end
     end
@@ -48,7 +48,7 @@ describe Flipflop::ControllerFilters do
 
       it "should allow action with feature" do
         subject.send(:require_feature, :test, only: [:show])
-        Flipflop::FeatureSet.instance.strategies.first.switch!(:test, true)
+        Flipflop::FeatureSet.current.strategies.first.switch!(:test, true)
         assert_equal 200, subject.action(:show).call({}).first
       end
 

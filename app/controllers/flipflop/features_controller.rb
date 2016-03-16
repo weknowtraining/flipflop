@@ -5,7 +5,7 @@ module Flipflop
     layout "flipflop"
 
     def index
-      @feature_set = FeaturesPresenter.new(FeatureSet.instance)
+      @feature_set = FeaturesPresenter.new(FeatureSet.current)
     end
 
     class FeaturesPresenter
@@ -29,7 +29,7 @@ module Flipflop
       end
 
       def switch_url(strategy, feature)
-        feature_strategy_path(feature.key, strategy.object_id)
+        feature_strategy_path(feature.key, strategy.key)
       end
     end
   end

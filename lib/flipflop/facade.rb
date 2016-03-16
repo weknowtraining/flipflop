@@ -1,14 +1,14 @@
 module Flipflop
   module Facade
     def config
-      Class.new do
+      Module.new do
         extend Declarable
-        class_eval(&Proc.new)
+        instance_eval(&Proc.new)
       end
     end
 
     def enabled?(feature)
-      FeatureSet.instance.enabled?(feature)
+      FeatureSet.current.enabled?(feature)
     end
     alias_method :on?, :enabled?
 
@@ -24,7 +24,7 @@ module Flipflop
 
     def method_missing(method, *args)
       if method[-1] == "?"
-        FeatureSet.instance.enabled?(method[0..-2].to_sym)
+        FeatureSet.current.enabled?(method[0..-2].to_sym)
       else
         super
       end

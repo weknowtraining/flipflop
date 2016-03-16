@@ -19,24 +19,58 @@ describe Flipflop do
 
     it "should add features" do
       assert_equal [:config_feature],
-        Flipflop::FeatureSet.instance.features.map(&:key)
+        Flipflop::FeatureSet.current.features.map(&:key)
     end
   end
 
   describe "enabled?" do
-    it "returns true for enabled features" do
+    it "should return true for enabled features" do
       assert_equal true, Flipflop.on?(:one)
     end
 
-    it "returns false for disabled features" do
+    it "should return false for disabled features" do
       assert_equal false, Flipflop.on?(:two)
+    end
+
+    it "should call strategy once if cached" do
+      counter = Class.new(Flipflop::Strategies::AbstractStrategy) do
+        attr_reader :called
+
+        def initialize(*)
+          @called = 0
+        end
+
+        def knows?(feature)
+          true
+        end
+
+        def enabled?(feature)
+          @called += 1
+        end
+      end
+
+      Class.new do
+        extend Flipflop::Declarable
+        strategy counter
+
+        feature :one, default: true
+      end
+
+      begin
+        Flipflop::FeatureCache.current.enable!
+        Flipflop.on?(:one)
+        Flipflop.on?(:one)
+        assert_equal 1, Flipflop::FeatureSet.current.strategies.first.called
+      ensure
+        Flipflop::FeatureCache.current.disable!
+      end
     end
   end
 
   describe "reset!" do
     it "should clear features" do
       Flipflop.reset!
-      assert_equal [], Flipflop::FeatureSet.instance.features
+      assert_equal [], Flipflop::FeatureSet.current.features
     end
   end
 
@@ -49,11 +83,11 @@ describe Flipflop do
       refute Flipflop.respond_to?(:foobar!)
     end
 
-    it "returns true for enabled features" do
+    it "should return true for enabled features" do
       assert_equal true, Flipflop.one?
     end
 
-    it "returns false for disabled features" do
+    it "should return false for disabled features" do
       assert_equal false, Flipflop.two?
     end
 

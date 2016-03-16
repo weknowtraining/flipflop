@@ -17,27 +17,27 @@ module Flipflop
       end
 
       def knows?(feature)
-        !!find_feature(feature)
+        !!find(feature).first
       end
 
       def enabled?(feature)
-        find_feature(feature).enabled?
+        find(feature).first.enabled?
       end
 
       def switch!(feature, enabled)
-        record = @class.where(key: feature.to_s).first_or_initialize
+        record = find(feature).first_or_initialize
         record.enabled = enabled
         record.save!
       end
 
       def clear!(feature)
-        @class.where(key: feature.to_s).first.try(:destroy)
+        find(feature).first.try(:destroy)
       end
 
-      private
+      protected
 
-      def find_feature(feature)
-        @class.where(key: feature.to_s).first
+      def find(feature)
+        @class.where(key: feature.to_s)
       end
     end
   end
