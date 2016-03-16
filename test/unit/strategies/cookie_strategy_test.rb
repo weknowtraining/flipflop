@@ -6,6 +6,7 @@ describe Flipflop::CookieStrategy do
   def create_request
     env = Rack::MockRequest.env_for("/example")
     request = ActionDispatch::TestRequest.new(env)
+    request.host = "example.com"
 
     class << request
       def cookie_jar
@@ -125,7 +126,7 @@ describe Flipflop::CookieStrategy do
       it "should pass options when setting value" do
         subject.switch!(:one, true)
         subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=1; domain=.example.org; path=/foo; HttpOnly",
+        assert_equal "flipflop_one=1; domain=.example.com; path=/foo; HttpOnly",
           headers["Set-Cookie"]
       end
 
@@ -133,7 +134,7 @@ describe Flipflop::CookieStrategy do
         subject.switch!(:one, true)
         subject.clear!(:one)
         subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=; domain=.example.org; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
+        assert_equal "flipflop_one=; domain=.example.com; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
           headers["Set-Cookie"]
       end
     end
