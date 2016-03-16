@@ -112,6 +112,31 @@ describe Flipflop::CookieStrategy do
         assert_equal true, subject.knows?(:three)
       end
     end
+
+    describe "with options" do
+      subject do
+        Flipflop::CookieStrategy.new(
+          domain: :all,
+          path: "/foo",
+          httponly: true,
+        )
+      end
+
+      it "should pass options when setting value" do
+        subject.switch!(:one, true)
+        subject.send(:request).cookie_jar.write(headers = {})
+        assert_equal "flipflop_one=1; domain=.example.org; path=/foo; HttpOnly",
+          headers["Set-Cookie"]
+      end
+
+      it "should pass options when deleting value" do
+        subject.switch!(:one, true)
+        subject.clear!(:one)
+        subject.send(:request).cookie_jar.write(headers = {})
+        assert_equal "flipflop_one=; domain=.example.org; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
+          headers["Set-Cookie"]
+      end
+    end
   end
 
   describe "outside request context" do

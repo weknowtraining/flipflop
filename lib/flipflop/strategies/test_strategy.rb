@@ -2,8 +2,8 @@ module Flipflop
   module Strategies
     class TestStrategy < AbstractStrategy
       def initialize(**options)
-        super
         @features = {}
+        super(**options)
       end
 
       def switchable?

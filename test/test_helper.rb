@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "flipflop"
+require "minitest"
 require "minitest/autorun"
 
 # Who is setting this to true? :o
@@ -61,6 +62,8 @@ class TestApp
   end
 
   def migrate!
+    ActiveRecord::Base.establish_connection
+
     ActiveRecord::Tasks::DatabaseTasks.create_current
     ActiveRecord::Migration.verbose = false
     ActiveRecord::Migrator.migrate(Rails.application.paths["db/migrate"].to_a)

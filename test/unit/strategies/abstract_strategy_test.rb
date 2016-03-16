@@ -84,4 +84,26 @@ describe Flipflop::AbstractStrategy do
       assert_equal "my strategy", subject.description
     end
   end
+
+  describe "with unknown options" do
+    subject do
+      Flipflop::AbstractStrategy.new(unknown: "one", other: "two")
+    end
+
+    it "should raise error" do
+      assert_raises RuntimeError do
+        subject
+      end
+    end
+
+    it "should raise with message" do
+      message = nil
+      begin
+        subject
+      rescue => err
+        message = err.message
+      end
+      assert_equal "Strategy 'abstract' did not understand option :unknown, :other.", message
+    end
+  end
 end

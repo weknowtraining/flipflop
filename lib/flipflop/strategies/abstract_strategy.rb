@@ -38,8 +38,9 @@ module Flipflop
       attr_reader :name, :description
 
       def initialize(**options)
-        @name = options[:name] || self.class.default_name
-        @description = options[:description] || self.class.default_description
+        @name = options.delete(:name) || self.class.default_name
+        @description = options.delete(:description) || self.class.default_description
+        raise "Strategy '#{name}' did not understand option #{options.keys.map(&:inspect) * ', '}." if options.any?
       end
 
       def key

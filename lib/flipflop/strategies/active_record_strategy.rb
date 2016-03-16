@@ -8,8 +8,8 @@ module Flipflop
       end
 
       def initialize(**options)
-        super
-        @class = options[:class] || Feature
+        @class = options.delete(:class) || Feature
+        super(**options)
       end
 
       def switchable?

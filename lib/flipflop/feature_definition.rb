@@ -4,8 +4,8 @@ module Flipflop
 
     def initialize(key, **options)
       @key = key
-      @default = !!options[:default] || false
-      @description = options[:description] || key.to_s.humanize + "."
+      @default = !!options.delete(:default) || false
+      @description = options.delete(:description) || key.to_s.humanize + "."
     end
 
     def name
