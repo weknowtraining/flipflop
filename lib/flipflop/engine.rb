@@ -2,7 +2,8 @@ module Flipflop
   class Engine < ::Rails::Engine
     isolate_namespace Flipflop
 
-    config.app_middleware.use Flipflop::FeatureCache::Middleware
+    config.app_middleware.insert_after ActionDispatch::Callbacks,
+      Flipflop::FeatureCache::Middleware
 
     initializer "flipflop.configure_precompile_assets" do
       config.assets.precompile += ["flipflop.css"]

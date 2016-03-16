@@ -8,10 +8,11 @@ module Flipflop
       end
 
       def switchable?
-        true
+        request?
       end
 
       def knows?(feature)
+        return false unless request?
         request.cookie_jar.key?(cookie_name(feature))
       end
 

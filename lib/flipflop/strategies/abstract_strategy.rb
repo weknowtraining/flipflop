@@ -75,7 +75,7 @@ module Flipflop
       protected
 
       def request
-        RequestInterceptor.request or raise "Strategy required request, but was called outside request context."
+        RequestInterceptor.request or raise "Strategy '#{name}' required request, but was used outside request context."
       end
 
       def request?

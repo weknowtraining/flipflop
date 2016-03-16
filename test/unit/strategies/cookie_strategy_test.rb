@@ -23,11 +23,11 @@ describe Flipflop::CookieStrategy do
     request
   end
 
-  describe "with defaults" do
-    subject do
-      Flipflop::CookieStrategy.new
-    end
+  subject do
+    Flipflop::CookieStrategy.new
+  end
 
+  describe "in request context" do
     before do
       Flipflop::AbstractStrategy::RequestInterceptor.request = create_request
     end
@@ -110,6 +110,28 @@ describe Flipflop::CookieStrategy do
         subject.switch!(:three, true)
         assert_equal true, subject.enabled?(:three)
         assert_equal true, subject.knows?(:three)
+      end
+    end
+  end
+
+  describe "outside request context" do
+    it "should not know feature" do
+      assert_equal false, subject.knows?(:one)
+    end
+
+    it "should not be switchable" do
+      assert_equal false, subject.switchable?
+    end
+
+    it "should not be able to check if feature is enabled" do
+      assert_raises RuntimeError do
+        subject.enabled?(:one)
+      end
+    end
+
+    it "should not be able to switch feature on" do
+      assert_raises RuntimeError do
+        subject.switch!(:one, true)
       end
     end
   end

@@ -34,14 +34,25 @@ describe Flipflop::AbstractStrategy do
 
       it "should raise if request is missing" do
         Flipflop::AbstractStrategy::RequestInterceptor.request = nil
-        assert_raises do
+        assert_raises RuntimeError do
           subject.send(:request)
         end
       end
 
+      it "should raise with message if request is missing" do
+        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+        message = nil
+        begin
+          subject.send(:request)
+        rescue => err
+          message = err.message
+        end
+        assert_equal "Strategy 'abstract' required request, but was used outside request context.", message
+      end
+
       it "should raise if request is missing in thread" do
         Flipflop::AbstractStrategy::RequestInterceptor.request = 3
-        assert_raises do
+        assert_raises RuntimeError do
           Thread.new { subject.send(:request) }.value
         end
       end

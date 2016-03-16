@@ -112,7 +112,7 @@ describe Flipflop::FeatureCache do
 
     it "should call app" do
       response = subject.call({})
-      assert_equal "ok", response[2].each.to_a.join
+      assert_equal "ok", response[2].to_a.join
     end
 
     it "should enable cache before request" do

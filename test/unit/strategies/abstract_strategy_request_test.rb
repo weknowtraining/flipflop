@@ -4,9 +4,6 @@ require "action_controller"
 
 describe Flipflop::AbstractStrategy::RequestInterceptor do
   subject do
-    # Force loading of cookie logic.
-    ActionDispatch::Cookies
-
     Class.new(ActionController::Metal) do
       class << self
         attr_accessor :request
