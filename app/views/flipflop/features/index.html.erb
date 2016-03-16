@@ -7,7 +7,7 @@
         <th class="name">Feature</th>
         <th class="description">Description</th>
         <% @feature_set.strategies.each do |strategy| -%>
-          <th data-toggle="tooltip" data-placement="top" title="<%= strategy.description -%>">
+          <th data-tooltip="<%= strategy.description -%>">
             <%= strategy.name.humanize -%>
           </th>
         <% end -%>
