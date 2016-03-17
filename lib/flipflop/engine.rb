@@ -23,14 +23,16 @@ module Flipflop
     end
 
     initializer "flipflop.dashboard", after: "flipflop.features_reloader" do |app|
-      if action = config.flipflop.dashboard_access_filter
+      if actions = config.flipflop.dashboard_access_filter
         to_prepare do
-          Flipflop::FeaturesController.before_action(action)
-          Flipflop::StrategiesController.before_action(action)
+          Flipflop::FeaturesController.before_action(*actions)
+          Flipflop::StrategiesController.before_action(*actions)
         end
       else
-        warn("WARNING: You have not set `config.flipflop.dashboard_access_filter`; " +
-             "the Flipflop dashboard is now always public!")
+        unless defined?(Rails::Generators) or defined?(Rake)
+          warn("WARNING: You have not set `config.flipflop.dashboard_access_filter`; " +
+               "the Flipflop dashboard is now always public!")
+        end
       end
     end
 
