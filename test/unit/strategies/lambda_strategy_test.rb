@@ -33,7 +33,7 @@ describe Flipflop::Strategies::LambdaStrategy do
 
     subject do
       features = self.features
-      Flipflop::Strategies::LambdaStrategy.new(lambda: lambda { |feature| features[feature] }).freeze
+      Flipflop::Strategies::LambdaStrategy.new(lambda: ->(feature) { features[feature] }).freeze
     end
 
     describe "with enabled feature" do
@@ -65,7 +65,7 @@ describe Flipflop::Strategies::LambdaStrategy do
 
   describe "with request lambda" do
     subject do
-      Flipflop::Strategies::LambdaStrategy.new(lambda: lambda { |feature|
+      Flipflop::Strategies::LambdaStrategy.new(lambda: ->(feature) {
         request.params[feature]
       }).freeze
     end
@@ -91,7 +91,7 @@ describe Flipflop::Strategies::LambdaStrategy do
 
   describe "with non conforming parameters" do
     subject do
-      Flipflop::Strategies::LambdaStrategy.new(lambda: lambda { }).freeze
+      Flipflop::Strategies::LambdaStrategy.new(lambda: ->() { }).freeze
     end
 
     it "should raise error" do
@@ -113,7 +113,7 @@ describe Flipflop::Strategies::LambdaStrategy do
 
   describe "with non conforming return value" do
     subject do
-      Flipflop::Strategies::LambdaStrategy.new(lambda: lambda { |feature|
+      Flipflop::Strategies::LambdaStrategy.new(lambda: ->(feature) {
         return feature
       }).freeze
     end

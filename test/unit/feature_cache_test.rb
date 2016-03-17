@@ -102,7 +102,7 @@ describe Flipflop::FeatureCache do
 
   describe "middleware" do
     subject do
-      app = lambda { |env|
+      app = ->(env) {
         raise env["error"] if env["error"]
         env["cache"] = Flipflop::FeatureCache.current.enabled?
         return [200, {}, ["ok"]]

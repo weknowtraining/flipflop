@@ -8,7 +8,7 @@ module Flipflop
       end
 
       def initialize(**options)
-        @lambda = (options.delete(:lambda) || lambda { |*| }).freeze
+        @lambda = (options.delete(:lambda) || ->(*) { }).freeze
         super(**options)
         if @lambda.arity.abs != 1
           raise StrategyError.new(name, "has lambda with arity #{@lambda.arity}, expected 1 or -1")
