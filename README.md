@@ -24,6 +24,8 @@ enabled or disabled. Available strategies are:
 
 Flipflop has a dashboard interface that's easy to understand and use.
 
+[<img src="https://raw.githubusercontent.com/voormedia/flipflop/screenshots/dashboard.png" alt="Dashboard">](https://raw.githubusercontent.com/voormedia/flipflop/screenshots/dashboard.png)
+
 ## Installation
 
 Add the gem to your `Gemfile`:
@@ -69,20 +71,20 @@ your server after making changes.
 ## Strategies
 
 The following strategies are provided:
-* `active_record` – Save feature settings in the database.
-    * `class` – Provide the feature model. `Flipflop::Feature` by default (which uses the table `features`). Honors `default_scope` when features are resolved or switched on/off.
-* `cookie` – Save feature settings in browser cookies for the current user.
-    * `path` – The path for which the cookies apply. Defaults to the root of the application.
-    * `domain` – Cookie domain. Is `nil` by default (no specific domain). Can be `:all` to use the topmost domain. Can be an array of domains.
-    * `secure` – Only set cookies if the connection is secured with TLS. Default is `false`.
-    * `httponly` – Whether the cookies are accessible via scripting or only HTTP. Default is `false`.
-* `query_string` – Interpret query string parameters as features. This strategy is only used for resolving. It does not allow switching features on/off.
-* `session` – Save feature settings in the current user's application session.
-* `default` – Not strictly needed, all feature defaults will be applied if no strategies match a feature. Include this strategy to determine the order of using the default value, and to make it appear in the dashboard.
+* `:active_record` – Save feature settings in the database.
+    * `:class` – Provide the feature model. `Flipflop::Feature` by default (which uses the table `features`). Honors `default_scope` when features are resolved or switched on/off.
+* `:cookie` – Save feature settings in browser cookies for the current user.
+    * `:path` – The path for which the cookies apply. Defaults to the root of the application.
+    * `:domain` – Cookie domain. Is `nil` by default (no specific domain). Can be `:all` to use the topmost domain. Can be an array of domains.
+    * `:secure` – Only set cookies if the connection is secured with TLS. Default is `false`.
+    * `:httponly` – Whether the cookies are accessible via scripting or only HTTP. Default is `false`.
+* `:query_string` – Interpret query string parameters as features. This strategy is only used for resolving. It does not allow switching features on/off.
+* `:session` – Save feature settings in the current user's application session.
+* `:default` – Not strictly needed, all feature defaults will be applied if no strategies match a feature. Include this strategy to determine the order of using the default value, and to make it appear in the dashboard.
 
 All strategies support these options, to change the appearance of the dashboard:
-* `name` – The name of the strategy. Defaults to the name of the selected strategy.
-* `description` – The description of the strategy. Every strategy has a default description.
+* `:name` – The name of the strategy. Defaults to the name of the selected strategy.
+* `:description` – The description of the strategy. Every strategy has a default description.
 
 ## Checking if a feature is enabled
 
@@ -139,6 +141,8 @@ Flipflop.configure do
   strategy :random do |feature|
     rand(2).zero?
   end
+  # ...
+end
 ```
 
 You can define your own custom strategies by inheriting from `Flipflop::Strategies::AbstractStrategy`:
