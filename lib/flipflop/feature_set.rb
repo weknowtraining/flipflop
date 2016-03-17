@@ -58,14 +58,12 @@ module Flipflop
       @@lock.synchronize do
         @features[feature.key] = feature.freeze
       end
-      self
     end
 
     def use(strategy)
       @@lock.synchronize do
         @strategies[strategy.key] = strategy.freeze
       end
-      self
     end
 
     def enabled?(feature)
