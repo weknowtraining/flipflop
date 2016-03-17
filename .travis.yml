@@ -44,7 +44,7 @@ deploy:
   provider: rubygems
   api_key:
     secure: ObuFc5QWnSgraKzYXLT5EhnlGm/+BQ2IN46q3ykXdk8m80ajpWD0/rqtCmu5SiBd6Z56CVZe2zSsEpGhN7/pC5kdG0hYzdpvbgX9IxJNMjYb7rNh2onXdIHVd3yk3qdNgI8hmrgtocJPdtPXqbZSY6KOSH6eb5rPDmA/bWwyREdicW5KN8ZWsXiLzKXoFZ6xvkNFbAjY8AicIfG+dHBFbx+q1xBOvbS44M+VIt/Qsknt9m5CYaWJ0AK/RZoyRhs0F0yYQSLu0mVt7JbHOL05SqQ3uCNlwiEqX+fIiN2mPb24Xxy6SVXr1kD0+H4EZHpgDeUlylO2myYJBFBnjzKXXr0qh3YTxaEKlWO7HnUdnJDRQ+bjyT0USBv7gXO2fEIBN864AGZf+3cL0aKRW3n3cyqrhiUxim7gro7eQSh6t6x5o+LGYw6dDdhR53XIFZoh0s/azYBbgl0bfM3juBMrD3e4w/ieaE9iI+NVj4Z4DYDRtbGIqxsuLwRmSkg3epvBc4Pa7vTDuCyVtd9lpFK55V1TysxhcPu0lqHf+SNnW3+DDwp+CQusQhFIsOcIQdr6PBNSTP5ZtEEqyEMfmt2QK2BEOYUuL6TxIUa9xuu8zMUahSaLOvekM5R+EwW04C3T5hWbPs7W1Ks2jcVzkL2iNd3I18pW9VvkXNAqveuoT28=
-  gem: tinify
+  gem: flipflop
   on:
     tags: true
     repo: voormedia/flipflop
