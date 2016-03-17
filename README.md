@@ -13,6 +13,7 @@ application functionality at run-time. It is originally based on
 * the ability to use the same strategy twice, with different options
 * configuration in a fixed location (`config/features.rb`) that is usable even if you don't use the database strategy
 * dashboard is inaccessible in production by default, for safety in case of misconfiguration
+* removes controller filters and view helpers, to promote uniform semantics to check for features (facilitates project-wide searching)
 
 You can configure strategy layers that will evaluate if a feature is currently
 enabled or disabled. Available strategies are:
