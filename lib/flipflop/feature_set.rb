@@ -1,56 +1,87 @@
 module Flipflop
+  class FeatureError < StandardError
+    def initialize(feature, error)
+      super("Feature '#{feature}' #{error}.")
+    end
+  end
+
+  class StrategyError < StandardError
+    def initialize(strategy, error)
+      super("Strategy '#{strategy}' #{error}.")
+    end
+  end
+
   class FeatureSet
+    @@lock = Monitor.new
+
     class << self
-      @@mutex = Mutex.new
-
       def current
-        @current or @@mutex.synchronize do
-          @current ||= new
-        end
-      end
-
-      def reset!
-        @@mutex.synchronize do
-          @current = nil
-        end
+        @current or @@lock.synchronize { @current ||= new }
       end
 
       private :new
     end
 
     def initialize
-      @features = Hash.new { |_, k| raise "Feature '#{k}' unknown" }
-      @strategies = Hash.new { |_, k| raise "Strategy '#{k}' unknown" }
+      @features = {}
+      @strategies = {}
+    end
+
+    def configure
+      @@lock.synchronize do
+        initialize
+        Module.new do
+          extend Configurable
+          instance_exec(&Proc.new)
+        end
+        @features.freeze
+        @strategies.freeze
+      end
+      self
+    end
+
+    def reset!
+      @@lock.synchronize do
+        initialize
+      end
+      self
+    end
+
+    def test!(strategy = Strategies::TestStrategy.new)
+      @@lock.synchronize do
+        @strategies = { strategy.key => strategy.freeze }.freeze
+      end
+      self
+    end
+
+    def add(feature)
+      @@lock.synchronize do
+        @features[feature.key] = feature.freeze
+      end
+      self
+    end
+
+    def use(strategy)
+      @@lock.synchronize do
+        @strategies[strategy.key] = strategy.freeze
+      end
+      self
     end
 
     def enabled?(feature)
       FeatureCache.current.fetch(feature) do
-        matching_strategy = @strategies.each_value.find do |strategy|
-          strategy.knows?(feature)
+        result = @strategies.each_value.inject(nil) do |status, strategy|
+          break status unless status.nil?
+          strategy.enabled?(feature)
         end
-
-        if matching_strategy
-          matching_strategy.enabled?(feature)
-        else
-          @features[feature].default
-        end
-      end
-    end
-
-    def add(feature)
-      @@mutex.synchronize do
-        @features[feature.key] = feature
-      end
-    end
-
-    def use(strategy)
-      @@mutex.synchronize do
-        @strategies[strategy.key] = strategy
+        result.nil? ? feature(feature).default : result
       end
     end
 
     def feature(feature)
-      @features[feature]
+      @features.fetch(feature) do
+        raise FeatureError.new(feature, "unknown")
+      end
     end
 
     def features
@@ -58,7 +89,9 @@ module Flipflop
     end
 
     def strategy(strategy)
-      @strategies[strategy]
+      @strategies.fetch(strategy) do
+        raise StrategyError.new(strategy, "unknown")
+      end
     end
 
     def strategies

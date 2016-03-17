@@ -1,6 +1,7 @@
 module Flipflop
   class StrategiesController < ApplicationController
-    include Flipflop::Engine.routes.url_helpers
+    include EnvironmentFilters
+    include Engine.routes.url_helpers
 
     def update
       strategy.switch!(feature_key, enable?)

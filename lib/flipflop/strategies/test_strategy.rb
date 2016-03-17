@@ -1,6 +1,8 @@
 module Flipflop
   module Strategies
     class TestStrategy < AbstractStrategy
+      @@lock = Mutex.new
+
       def initialize(**options)
         @features = {}
         super(**options)
@@ -10,24 +12,28 @@ module Flipflop
         true
       end
 
-      def knows?(feature)
-        @features.has_key?(feature)
-      end
-
       def enabled?(feature)
-        @features[feature]
+        @@lock.synchronize do
+          @features[feature]
+        end
       end
 
       def switch!(feature, enabled)
-        @features[feature] = enabled
+        @@lock.synchronize do
+          @features[feature] = enabled
+        end
       end
 
       def clear!(feature)
-        @features.delete(feature)
+        @@lock.synchronize do
+          @features.delete(feature)
+        end
       end
 
       def reset!
-        @features.clear
+        @@lock.synchronize do
+          @features.clear
+        end
       end
     end
   end

@@ -1,10 +1,8 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
-describe Flipflop::DefaultStrategy do
+describe Flipflop::Strategies::DefaultStrategy do
   before do
-    Class.new do
-      extend Flipflop::Declarable
-
+    Flipflop.configure do
       feature :one, default: true
       feature :two
     end
@@ -12,7 +10,7 @@ describe Flipflop::DefaultStrategy do
     
   describe "with defaults" do
     subject do
-      Flipflop::DefaultStrategy.new
+      Flipflop::Strategies::DefaultStrategy.new.freeze
     end
 
     it "should have default name" do
@@ -32,20 +30,12 @@ describe Flipflop::DefaultStrategy do
     end
 
     describe "with explicitly defaulted feature" do
-      it "should know feature" do
-        assert_equal true, subject.knows?(:one)
-      end
-
       it "should have feature enabled" do
         assert_equal true, subject.enabled?(:one)
       end
     end
 
     describe "with implicitly defaulted feature" do
-      it "should know feature" do
-        assert_equal true, subject.knows?(:two)
-      end
-
       it "should not have feature enabled" do
         assert_equal false, subject.enabled?(:two)
       end

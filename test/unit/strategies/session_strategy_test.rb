@@ -1,8 +1,8 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
-describe Flipflop::Strategies::CookieStrategy do
+describe Flipflop::Strategies::SessionStrategy do
   subject do
-    Flipflop::Strategies::CookieStrategy.new.freeze
+    Flipflop::Strategies::SessionStrategy.new.freeze
   end
 
   describe "in request context" do
@@ -15,11 +15,11 @@ describe Flipflop::Strategies::CookieStrategy do
     end
 
     it "should have default name" do
-      assert_equal "cookie", subject.name
+      assert_equal "session", subject.name
     end
 
     it "should have default description" do
-      assert_equal "Stores features in a browser cookie. Applies to current user.",
+      assert_equal "Stores features in the user session. Applies to current user.",
         subject.description
     end
 
@@ -33,7 +33,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with enabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_name, :one)] = "1"
+        subject.send(:request).session[:one] = true
       end
 
       it "should have feature enabled" do
@@ -53,7 +53,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with disabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_name, :two)] = "0"
+        subject.send(:request).session[:two] = false
       end
 
       it "should not have feature enabled" do
@@ -71,7 +71,7 @@ describe Flipflop::Strategies::CookieStrategy do
       end
     end
 
-    describe "with uncookied feature" do
+    describe "with unsessioned feature" do
       it "should not know feature" do
         assert_nil subject.enabled?(:three)
       end
@@ -79,31 +79,6 @@ describe Flipflop::Strategies::CookieStrategy do
       it "should be able to switch feature on" do
         subject.switch!(:three, true)
         assert_equal true, subject.enabled?(:three)
-      end
-    end
-
-    describe "with options" do
-      subject do
-        Flipflop::Strategies::CookieStrategy.new(
-          domain: :all,
-          path: "/foo",
-          httponly: true,
-        ).freeze
-      end
-
-      it "should pass options when setting value" do
-        subject.switch!(:one, true)
-        subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=1; domain=.example.com; path=/foo; HttpOnly",
-          headers["Set-Cookie"]
-      end
-
-      it "should pass options when deleting value" do
-        subject.switch!(:one, true)
-        subject.clear!(:one)
-        subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=; domain=.example.com; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
-          headers["Set-Cookie"]
       end
     end
   end

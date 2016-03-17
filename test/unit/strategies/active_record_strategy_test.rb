@@ -6,7 +6,7 @@ class ResultSet
   end
 
   def first_or_initialize
-    @results.first or MyFeature.new(@key, false)
+    @results.first or My::Feature.new(@key, false)
   end
 
   def first
@@ -14,30 +14,32 @@ class ResultSet
   end
 end
 
-class MyFeature < Struct.new(:key, :enabled)
-  class << self
-    attr_accessor :results
+module My
+  class Feature < Struct.new(:key, :enabled)
+    class << self
+      attr_accessor :results
 
-    def where(conditions)
-      results[conditions[:key].to_sym]
+      def where(conditions)
+        results[conditions[:key].to_sym]
+      end
     end
-  end
 
-  alias_method :enabled?, :enabled
+    alias_method :enabled?, :enabled
 
-  def destroy
-    MyFeature.results[key] = ResultSet.new(key)
-  end
+    def destroy
+      My::Feature.results[key] = ResultSet.new(key)
+    end
 
-  def save!
-    MyFeature.results[key] = ResultSet.new(key, [self])
+    def save!
+      My::Feature.results[key] = ResultSet.new(key, [self])
+    end
   end
 end
 
-describe Flipflop::ActiveRecordStrategy do
+describe Flipflop::Strategies::ActiveRecordStrategy do
   describe "with defaults" do
     subject do
-      Flipflop::ActiveRecordStrategy.new(class: MyFeature)
+      Flipflop::Strategies::ActiveRecordStrategy.new(class: My::Feature).freeze
     end
 
     it "should have default name" do
@@ -59,13 +61,9 @@ describe Flipflop::ActiveRecordStrategy do
 
     describe "with enabled feature" do
       before do
-        MyFeature.results = {
-          one: ResultSet.new(:one, [MyFeature.new(:one, true)]),
+        My::Feature.results = {
+          one: ResultSet.new(:one, [My::Feature.new(:one, true)]),
         }
-      end
-
-      it "should know feature" do
-        assert_equal true, subject.knows?(:one)
       end
 
       it "should have feature enabled" do
@@ -79,19 +77,15 @@ describe Flipflop::ActiveRecordStrategy do
 
       it "should be able to clear feature" do
         subject.clear!(:one)
-        assert_equal false, subject.knows?(:one)
+        assert_nil subject.enabled?(:one)
       end
     end
 
     describe "with disabled feature" do
       before do
-        MyFeature.results = {
-          two: ResultSet.new(:two, [MyFeature.new(:two, false)]),
+        My::Feature.results = {
+          two: ResultSet.new(:two, [My::Feature.new(:two, false)]),
         }
-      end
-
-      it "should know feature" do
-        assert_equal true, subject.knows?(:two)
       end
 
       it "should not have feature enabled" do
@@ -105,26 +99,59 @@ describe Flipflop::ActiveRecordStrategy do
 
       it "should be able to clear feature" do
         subject.clear!(:two)
-        assert_equal false, subject.knows?(:two)
+        assert_nil subject.enabled?(:two)
       end
     end
 
     describe "with unsaved feature" do
       before do
-        MyFeature.results = {
+        My::Feature.results = {
           three: ResultSet.new(:three),
         }
       end
 
       it "should not know feature" do
-        assert_equal false, subject.knows?(:three)
+        assert_nil subject.enabled?(:three)
       end
 
       it "should be able to switch feature on" do
         subject.switch!(:three, true)
         assert_equal true, subject.enabled?(:three)
-        assert_equal true, subject.knows?(:three)
       end
+    end
+  end
+
+  describe "with string class name" do
+    subject do
+      Flipflop::Strategies::ActiveRecordStrategy.new(class: "My::Feature").freeze
+    end
+
+    before do
+      My::Feature.results = {
+        one: ResultSet.new(:one, [My::Feature.new(:one, true)]),
+      }
+    end
+
+    it "should be able to switch feature off" do
+      subject.switch!(:one, false)
+      assert_equal false, subject.enabled?(:one)
+    end
+  end
+
+  describe "with symbol class name" do
+    subject do
+      Flipflop::Strategies::ActiveRecordStrategy.new(class: :"My::Feature").freeze
+    end
+
+    before do
+      My::Feature.results = {
+        one: ResultSet.new(:one, [My::Feature.new(:one, true)]),
+      }
+    end
+
+    it "should be able to switch feature off" do
+      subject.switch!(:one, false)
+      assert_equal false, subject.enabled?(:one)
     end
   end
 end

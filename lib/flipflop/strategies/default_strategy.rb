@@ -7,10 +7,6 @@ module Flipflop
         end
       end
 
-      def knows?(feature)
-        true
-      end
-
       def enabled?(feature)
         FeatureSet.current.feature(feature).default
       end

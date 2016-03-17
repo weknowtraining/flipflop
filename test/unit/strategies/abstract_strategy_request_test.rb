@@ -1,8 +1,6 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
-require "action_controller"
-
-describe Flipflop::AbstractStrategy::RequestInterceptor do
+describe Flipflop::Strategies::AbstractStrategy::RequestInterceptor do
   subject do
     Class.new(ActionController::Metal) do
       class << self
@@ -10,16 +8,16 @@ describe Flipflop::AbstractStrategy::RequestInterceptor do
       end
 
       include AbstractController::Callbacks
-      include Flipflop::AbstractStrategy::RequestInterceptor
+      include Flipflop::Strategies::AbstractStrategy::RequestInterceptor
 
       def index
-        self.class.request = Flipflop::AbstractStrategy::RequestInterceptor.request
+        self.class.request = Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request
       end
     end
   end
 
   after do
-    Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
   end
 
   it "should add before filter to controller" do
@@ -39,6 +37,6 @@ describe Flipflop::AbstractStrategy::RequestInterceptor do
 
   it "should clear request" do
     subject.action(:index).call({})
-    assert_nil Flipflop::AbstractStrategy::RequestInterceptor.request
+    assert_nil Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request
   end
 end

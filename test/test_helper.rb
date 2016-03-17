@@ -4,8 +4,31 @@ require "flipflop"
 gem "minitest"
 require "minitest/autorun"
 
+require "action_controller"
+
 # Who is setting this to true? :o
 $VERBOSE = false
+
+def create_request
+  env = Rack::MockRequest.env_for("/example")
+  request = ActionDispatch::TestRequest.new(env)
+  request.host = "example.com"
+
+  class << request
+    def cookie_jar
+      @cookie_jar ||= begin
+        method = ActionDispatch::Cookies::CookieJar.method(:build)
+        if method.arity == 2 # Rails 5.0
+          method.call(self, {})
+        else
+          method.call(self)
+        end
+      end
+    end
+  end
+
+  request
+end
 
 def reload_constant(name)
   ActiveSupport::Dependencies.remove_constant(name.to_s)
@@ -22,7 +45,7 @@ class TestApp
         current.create!
         current.load!
         current.migrate!
-        reload_constant(:Feature)
+        reload_constant("Flipflop::Feature")
       end
     end
   end
@@ -59,6 +82,7 @@ class TestApp
     require "flipflop/engine"
     require File.expand_path("../../tmp/app/config/environment", __FILE__)
     ActiveSupport::Dependencies.mechanism = :load
+    load(Rails.application.paths["config/features.rb"].existent.first)
     require "capybara/rails"
   end
 

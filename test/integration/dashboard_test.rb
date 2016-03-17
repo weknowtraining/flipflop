@@ -13,6 +13,18 @@ describe Flipflop do
     @app
   end
 
+  describe "outside development and test" do
+    before do
+      Rails.env.stub(:test?, false) do
+        visit "/flipflop"
+      end
+    end
+
+    it "should be forbidden" do
+      assert_equal 403, page.status_code
+    end
+  end
+
   describe "without features" do
     before do
       visit "/flipflop"
@@ -30,13 +42,15 @@ describe Flipflop do
 
   describe "with features" do
     before do
-      Feature.class_eval do
+      Flipflop::FeatureSet.current.instance_variable_set(:@features, {})
+      Module.new do
+        extend Flipflop::Configurable
         feature :world_domination, description: "Try and take over the world!"
         feature :shiny_things, default: true
       end
 
       Capybara.current_session.driver.browser.clear_cookies
-      Feature.delete_all
+      Flipflop::Feature.delete_all
 
       visit "/flipflop"
     end

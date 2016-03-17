@@ -1,8 +1,0 @@
-Description:
-    Generates the Feature database model class for Flipflop.
-
-Example:
-    rails generate flipflop:model
-
-    This will create:
-        app/models/feature.rb (class Feature < ActiveRecord::Base)

@@ -38,9 +38,11 @@ module Flipflop
       attr_reader :name, :description
 
       def initialize(**options)
-        @name = options.delete(:name) || self.class.default_name
-        @description = options.delete(:description) || self.class.default_description
-        raise "Strategy '#{name}' did not understand option #{options.keys.map(&:inspect) * ', '}." if options.any?
+        @name = (options.delete(:name) || self.class.default_name).freeze
+        @description = (options.delete(:description) || self.class.default_description).freeze
+        if options.any?
+          raise StrategyError.new(name, "did not understand option #{options.keys.map(&:inspect) * ', '}")
+        end
       end
 
       def key
@@ -49,36 +51,45 @@ module Flipflop
         object_id.to_s
       end
 
+      # Return true iff this strategy is able to switch features on/off.
+      # Return false otherwise.
       def switchable?
         false
       end
 
-      def knows?(feature)
-        raise NotImplementedError
-      end
-
+      # Return true iff the given feature symbol is explicitly enabled.
+      # Return false iff the given feature symbol is explicitly disabled.
+      # Return nil iff the given feature symbol is unknown by this strategy.
       def enabled?(feature)
         raise NotImplementedError
       end
 
+      # Enable/disable (true/false) the given feature symbol explicitly.
       def switch!(feature, enabled)
         raise NotImplementedError
       end
 
+      # Remove the feature symbol from this strategy. It should no longer be
+      # recognized afterwards: enabled?(feature) will return nil.
       def clear!(feature)
         raise NotImplementedError
       end
 
+      # Optional. Remove all features, so that no feature is known.
       def reset!
         raise NotImplementedError
       end
 
       protected
 
+      # Returns the request. Raises if no request is available, for example if
+      # the strategy was used outside of a request context.
       def request
-        RequestInterceptor.request or raise "Strategy '#{name}' required request, but was used outside request context."
+        RequestInterceptor.request or
+          raise StrategyError.new(name, "required request, but was used outside request context")
       end
 
+      # Returns true iff a request is available.
       def request?
         !RequestInterceptor.request.nil?
       end

@@ -1,13 +1,13 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
-describe Flipflop::AbstractStrategy do
+describe Flipflop::Strategies::AbstractStrategy do
   after do
-    Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
   end
 
   describe "with defaults" do
     subject do
-      Flipflop::AbstractStrategy.new
+      Flipflop::Strategies::AbstractStrategy.new.freeze
     end
 
     it "should have default name" do
@@ -28,19 +28,19 @@ describe Flipflop::AbstractStrategy do
 
     describe "request" do
       it "should return request" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = 3
         assert_equal 3, subject.send(:request)
       end
 
       it "should raise if request is missing" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
-        assert_raises RuntimeError do
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
+        assert_raises Flipflop::StrategyError do
           subject.send(:request)
         end
       end
 
       it "should raise with message if request is missing" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
         message = nil
         begin
           subject.send(:request)
@@ -51,8 +51,8 @@ describe Flipflop::AbstractStrategy do
       end
 
       it "should raise if request is missing in thread" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
-        assert_raises RuntimeError do
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = 3
+        assert_raises Flipflop::StrategyError do
           Thread.new { subject.send(:request) }.value
         end
       end
@@ -60,12 +60,12 @@ describe Flipflop::AbstractStrategy do
 
     describe "request predicate" do
       it "should return true if request is present" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = 3
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = 3
         assert_equal true, subject.send(:request?)
       end
 
       it "should return false if request is missing" do
-        Flipflop::AbstractStrategy::RequestInterceptor.request = nil
+        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
         assert_equal false, subject.send(:request?)
       end
     end
@@ -73,7 +73,7 @@ describe Flipflop::AbstractStrategy do
 
   describe "with options" do
     subject do
-      Flipflop::AbstractStrategy.new(name: "strategy", description: "my strategy")
+      Flipflop::Strategies::AbstractStrategy.new(name: "strategy", description: "my strategy").freeze
     end
 
     it "should have specified name" do
@@ -87,11 +87,11 @@ describe Flipflop::AbstractStrategy do
 
   describe "with unknown options" do
     subject do
-      Flipflop::AbstractStrategy.new(unknown: "one", other: "two")
+      Flipflop::Strategies::AbstractStrategy.new(unknown: "one", other: "two").freeze
     end
 
     it "should raise error" do
-      assert_raises RuntimeError do
+      assert_raises Flipflop::StrategyError do
         subject
       end
     end

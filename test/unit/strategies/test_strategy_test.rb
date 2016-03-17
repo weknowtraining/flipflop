@@ -1,9 +1,9 @@
 require File.expand_path("../../../test_helper", __FILE__)
 
-describe Flipflop::TestStrategy do
+describe Flipflop::Strategies::TestStrategy do
   describe "with defaults" do
     subject do
-      Flipflop::TestStrategy.new
+      Flipflop::Strategies::TestStrategy.new.freeze
     end
 
     it "should have default name" do
@@ -27,10 +27,6 @@ describe Flipflop::TestStrategy do
         subject.switch!(:one, true)
       end
 
-      it "should know feature" do
-        assert_equal true, subject.knows?(:one)
-      end
-
       it "should have feature enabled" do
         assert_equal true, subject.enabled?(:one)
       end
@@ -42,17 +38,13 @@ describe Flipflop::TestStrategy do
 
       it "should be able to clear feature" do
         subject.clear!(:one)
-        assert_equal false, subject.knows?(:one)
+        assert_nil subject.enabled?(:one)
       end
     end
 
     describe "with disabled feature" do
       before do
         subject.switch!(:two, false)
-      end
-
-      it "should know feature" do
-        assert_equal true, subject.knows?(:two)
       end
 
       it "should not have feature enabled" do
@@ -66,19 +58,18 @@ describe Flipflop::TestStrategy do
 
       it "should be able to clear feature" do
         subject.clear!(:two)
-        assert_equal false, subject.knows?(:two)
+        assert_nil subject.enabled?(:two)
       end
     end
 
     describe "with unsaved feature" do
       it "should not know feature" do
-        assert_equal false, subject.knows?(:three)
+        assert_nil subject.enabled?(:three)
       end
 
       it "should be able to switch feature on" do
         subject.switch!(:three, true)
         assert_equal true, subject.enabled?(:three)
-        assert_equal true, subject.knows?(:three)
       end
     end
   end

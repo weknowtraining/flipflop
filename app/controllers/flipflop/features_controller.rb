@@ -2,6 +2,8 @@ require "bootstrap"
 
 module Flipflop
   class FeaturesController < ApplicationController
+    include EnvironmentFilters
+
     layout "flipflop"
 
     def index
@@ -11,25 +13,43 @@ module Flipflop
     class FeaturesPresenter
       include Flipflop::Engine.routes.url_helpers
 
+      attr_reader :feature_set
+
       extend Forwardable
-      delegate [:features, :strategies] => :@feature_set
+      delegate [:features, :strategies] => :feature_set
 
       def initialize(feature_set)
+        @cache = {}
         @feature_set = feature_set
       end
 
       def status(feature)
-        @feature_set.enabled?(feature.key) ? "on" : "off"
+        cache(nil, feature) do
+          status_to_s(feature_set.enabled?(feature.key))
+        end
       end
 
       def strategy_status(strategy, feature)
-        if strategy.knows?(feature.key)
-          strategy.enabled?(feature.key) ? "on" : "off"
+        cache(strategy, feature) do
+          status_to_s(strategy.enabled?(feature.key))
         end
       end
 
       def switch_url(strategy, feature)
         feature_strategy_path(feature.key, strategy.key)
+      end
+
+      private
+
+      def cache(strategy, feature)
+        key = feature.key.to_s + (strategy ? "-" + strategy.key.to_s : "")
+        return @cache[key] if @cache.has_key?(key)
+        @cache[key] = yield
+      end
+
+      def status_to_s(status)
+        return "on" if status == true
+        return "off" if status == false
       end
     end
   end

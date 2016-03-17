@@ -1,22 +1,12 @@
 module Flipflop
   module Facade
-    def config
-      Module.new do
-        extend Declarable
-        instance_eval(&Proc.new)
-      end
-    end
-
-    def enabled?(feature)
-      FeatureSet.current.enabled?(feature)
-    end
+    extend Forwardable
+    delegate [:configure, :enabled?] => :feature_set
     alias_method :on?, :enabled?
 
-    def reset!
-      FeatureSet.reset!
+    def feature_set
+      FeatureSet.current
     end
-
-    private
 
     def respond_to_missing?(method, include_private = false)
       method[-1] == "?"

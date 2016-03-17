@@ -8,7 +8,10 @@ module Flipflop
       end
 
       def initialize(**options)
-        @class = options.delete(:class) || Feature
+        @class = options.delete(:class) || "Flipflop::Feature"
+        if !@class.kind_of?(Class)
+          @class = ActiveSupport::Inflector.constantize(@class.to_s)
+        end
         super(**options)
       end
 
@@ -16,12 +19,8 @@ module Flipflop
         true
       end
 
-      def knows?(feature)
-        !!find(feature).first
-      end
-
       def enabled?(feature)
-        find(feature).first.enabled?
+        find(feature).first.try(:enabled?)
       end
 
       def switch!(feature, enabled)

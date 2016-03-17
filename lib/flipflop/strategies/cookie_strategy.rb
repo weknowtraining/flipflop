@@ -9,7 +9,7 @@ module Flipflop
 
       def initialize(**options)
         # TODO: Support :expires as a runtime-evaluated option?
-        @options = options.extract!(:path, :domain, :secure, :httponly)
+        @options = options.extract!(:path, :domain, :secure, :httponly).freeze
         super(**options)
       end
 
@@ -17,12 +17,9 @@ module Flipflop
         request?
       end
 
-      def knows?(feature)
-        return false unless request?
-        request.cookie_jar.key?(cookie_name(feature))
-      end
-
       def enabled?(feature)
+        return unless request?
+        return unless request.cookie_jar.has_key?(cookie_name(feature))
         cookie = request.cookie_jar[cookie_name(feature)]
         cookie_value = cookie.is_a?(Hash) ? cookie["value"] : cookie
         cookie_value === "1"
@@ -36,6 +33,8 @@ module Flipflop
       def clear!(feature)
         request.cookie_jar.delete(cookie_name(feature), **@options)
       end
+
+      protected
 
       def cookie_name(feature)
         :"flipflop_#{feature}"

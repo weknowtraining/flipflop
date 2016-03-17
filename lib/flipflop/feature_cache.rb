@@ -23,7 +23,7 @@ module Flipflop
     class << self
       def current
         Thread.current.thread_variable_get(:flipflop_cache) or
-          Thread.current.thread_variable_set(:flipflop_cache, new)
+        Thread.current.thread_variable_set(:flipflop_cache, new)
       end
 
       private :new

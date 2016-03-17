@@ -3,18 +3,54 @@ module Flipflop
     isolate_namespace Flipflop
 
     config.app_middleware.insert_after ActionDispatch::Callbacks,
-      Flipflop::FeatureCache::Middleware
+      FeatureCache::Middleware
 
-    initializer "flipflop.configure_precompile_assets" do
+    config.flipflop = ActiveSupport::OrderedOptions.new
+
+    initializer "flipflop.assets" do |app|
       config.assets.precompile += ["flipflop.css"]
     end
 
-    initializer "flipflop.load_features" do
-      ActiveSupport::Dependencies.load_missing_constant(Object, :Feature) rescue nil
+    initializer "flipflop.features_path" do |app|
+      app.paths.add("config/features.rb")
     end
 
-    initializer "flipflop.load_request_interceptor" do
-      ActionController::Base.send(:include, Flipflop::AbstractStrategy::RequestInterceptor)
+    initializer "flipflop.features_reloader" do |app|
+      app.reloaders.push(reloader = feature_reloader(app))
+      to_prepare do
+        reloader.execute
+      end
+    end
+
+    initializer "flipflop.dashboard", after: "flipflop.features_reloader" do |app|
+      if action = config.flipflop.dashboard_access_filter
+        to_prepare do
+          Flipflop::FeaturesController.before_action(action)
+          Flipflop::StrategiesController.before_action(action)
+        end
+      else
+        warn("WARNING: You have not set `config.flipflop.dashboard_access_filter`; " +
+             "the Flipflop dashboard is now always public!")
+      end
+    end
+
+    initializer "flipflop.request_interceptor" do |app|
+      interceptor = Strategies::AbstractStrategy::RequestInterceptor
+      ActionController::Base.send(:include, interceptor)
+    end
+
+    private
+
+    def feature_reloader(app)
+      features = app.paths["config/features.rb"].existent
+      ActiveSupport::FileUpdateChecker.new(features) do
+        features.each { |path| load(path) }
+      end
+    end
+
+    def to_prepare
+      klass = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
+      klass.to_prepare(&Proc.new)
     end
   end
 end
