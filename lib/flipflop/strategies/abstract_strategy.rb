@@ -40,9 +40,14 @@ module Flipflop
       def initialize(**options)
         @name = (options.delete(:name) || self.class.default_name).freeze
         @description = (options.delete(:description) || self.class.default_description).freeze
+        @hidden = !!options.delete(:hidden) || false
         if options.any?
           raise StrategyError.new(name, "did not understand option #{options.keys.map(&:inspect) * ', '}")
         end
+      end
+
+      def hidden?
+        @hidden
       end
 
       def key

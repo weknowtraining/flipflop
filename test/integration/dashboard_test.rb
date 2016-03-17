@@ -143,4 +143,20 @@ describe Flipflop do
       end
     end
   end
+
+  describe "with hidden strategy" do
+    before do
+      Flipflop::FeatureSet.current.instance_variable_set(:@strategies, {})
+      Module.new do
+        extend Flipflop::Configurable
+        strategy :query_string, hidden: true
+      end
+
+      visit "/flipflop"
+    end
+
+    it "should not show hidden strategy" do
+      assert_equal [], all("thead th").map(&:text)[3..-1]
+    end
+  end
 end

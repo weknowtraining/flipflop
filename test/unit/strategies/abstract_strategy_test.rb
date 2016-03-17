@@ -22,6 +22,10 @@ describe Flipflop::Strategies::AbstractStrategy do
       assert_equal false, subject.switchable?
     end
 
+    it "should not be hidden" do
+      assert_equal false, subject.hidden?
+    end
+
     it "should have unique key" do
       assert_match /^\d+$/, subject.key
     end
@@ -73,7 +77,11 @@ describe Flipflop::Strategies::AbstractStrategy do
 
   describe "with options" do
     subject do
-      Flipflop::Strategies::AbstractStrategy.new(name: "strategy", description: "my strategy").freeze
+      Flipflop::Strategies::AbstractStrategy.new(
+        name: "strategy",
+        description: "my strategy",
+        hidden: true,
+      ).freeze
     end
 
     it "should have specified name" do
@@ -83,11 +91,18 @@ describe Flipflop::Strategies::AbstractStrategy do
     it "should have specified description" do
       assert_equal "my strategy", subject.description
     end
+
+    it "should be hidden" do
+      assert_equal true, subject.hidden?
+    end
   end
 
   describe "with unknown options" do
     subject do
-      Flipflop::Strategies::AbstractStrategy.new(unknown: "one", other: "two").freeze
+      Flipflop::Strategies::AbstractStrategy.new(
+        unknown: "one",
+        other: "two",
+      ).freeze
     end
 
     it "should raise error" do

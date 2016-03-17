@@ -13,19 +13,22 @@ module Flipflop
     class FeaturesPresenter
       include Flipflop::Engine.routes.url_helpers
 
-      attr_reader :feature_set
-
-      extend Forwardable
-      delegate [:features, :strategies] => :feature_set
-
       def initialize(feature_set)
         @cache = {}
         @feature_set = feature_set
       end
 
+      def strategies
+        @feature_set.strategies.reject(&:hidden?)
+      end
+
+      def features
+        @feature_set.features
+      end
+
       def status(feature)
         cache(nil, feature) do
-          status_to_s(feature_set.enabled?(feature.key))
+          status_to_s(@feature_set.enabled?(feature.key))
         end
       end
 

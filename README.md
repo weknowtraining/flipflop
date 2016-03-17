@@ -85,6 +85,7 @@ The following strategies are provided:
 All strategies support these options, to change the appearance of the dashboard:
 * `:name` – The name of the strategy. Defaults to the name of the selected strategy.
 * `:description` – The description of the strategy. Every strategy has a default description.
+* `:hidden` – Optionally hides the strategy from the dashboard. Default is `false`.
 
 ## Checking if a feature is enabled
 
