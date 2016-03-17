@@ -151,6 +151,12 @@ You can define your own custom strategies by inheriting from `Flipflop::Strategi
 
 ```ruby
 class UserPreferenceStrategy < Flipflop::Strategies::AbstractStrategy
+  class << self
+    def default_description
+      "Allows configuration of features per user."
+    end
+  end
+
   def switchable?
     # Can only switch features on/off if we have the user's session.
     # The `request` method is provided by AbstractStrategy.
@@ -181,6 +187,14 @@ class UserPreferenceStrategy < Flipflop::Strategies::AbstractStrategy
     # The `request` method is provided by AbstractStrategy.
     User.find_by_id(request.session[:user_id])
   end
+end
+```
+
+Use it in `config/features.rb`:
+
+```ruby
+Flipflop.configure do
+  strategy UserPreferenceStrategy # name: "my strategy", description: "..."
 end
 ```
 
