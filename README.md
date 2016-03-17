@@ -214,6 +214,32 @@ config.flipflop.dashboard_access_filter = -> {
 }
 ```
 
+## Testing
+
+In your test environment, you typically want to keep your features. But to make
+testing easier, you may not want to use any of the strategies you use in
+development and production. You can replace all strategies with a single
+`:test` strategy by calling `Flipflop::FeatureSet.current.test!`. The test
+strategy will be returned. You can use this strategy to enable and disable
+features.
+
+```ruby
+describe WorldDomination do
+  before do
+    test_strategy = Flipflop::FeatureSet.current.test!
+    test_strategy.switch!(:world_domination, true)
+  end
+
+  it "should dominate the world" do
+     # ...
+  end
+end
+```
+
+If you are not happy with the default test strategy (which is essentially a
+simple thread-safe hash object), you can provide your own implementation as
+argument to the `test!` method.
+
 ## License
 
 This software is licensed under the MIT License. [View the license](LICENSE).

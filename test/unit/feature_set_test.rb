@@ -54,6 +54,11 @@ describe Flipflop::FeatureSet do
       subject.test!(Flipflop::Strategies::LambdaStrategy.new)
       assert_equal [Flipflop::Strategies::LambdaStrategy], subject.strategies.map(&:class)
     end
+
+    it "should return test strategy" do
+      returned = subject.test!(strategy = Flipflop::Strategies::LambdaStrategy.new)
+      assert_equal strategy, returned
+    end
   end
 
   describe "enabled" do

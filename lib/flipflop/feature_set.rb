@@ -51,7 +51,7 @@ module Flipflop
       @@lock.synchronize do
         @strategies = { strategy.key => strategy.freeze }.freeze
       end
-      self
+      strategy
     end
 
     def add(feature)
