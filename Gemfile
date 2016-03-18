@@ -1,6 +1,8 @@
 source "https://rubygems.org"
 gemspec
 
+gem "bootstrap", "= 4.0.0.alpha3"
+
 group :test do
   version = ENV["RAILS_VERSION"] || "master"
   if version == "master"

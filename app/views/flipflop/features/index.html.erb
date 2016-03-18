@@ -30,13 +30,13 @@
                   <%= submit_tag "on",
                     type: "submit",
                     class: @feature_set.strategy_status(strategy, feature) == "on" ? "active" : nil,
-                    disabled: strategy.switchable? ? false : true
+                    disabled: !strategy.switchable?
                   -%>
 
                   <%= submit_tag "off",
                     type: "submit",
                     class: @feature_set.strategy_status(strategy, feature) == "off" ? "active" : nil,
-                    disabled: strategy.switchable? ? false : true
+                    disabled: !strategy.switchable?
                   -%>
                 </div>
               <% end -%>
