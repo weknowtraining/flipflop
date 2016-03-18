@@ -1,5 +1,3 @@
-require "bootstrap"
-
 module Flipflop
   class FeaturesController < ApplicationController
     include EnvironmentFilters

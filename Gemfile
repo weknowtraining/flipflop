@@ -1,7 +1,9 @@
 source "https://rubygems.org"
 gemspec
 
-gem "bootstrap", "= 4.0.0.alpha3"
+if ENV["CONTINUOUS_INTEGRATION"]
+  gem "bootstrap", "= 4.0.0.alpha3"
+end
 
 group :test do
   version = ENV["RAILS_VERSION"] || "master"

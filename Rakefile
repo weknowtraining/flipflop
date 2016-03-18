@@ -1,15 +1,15 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
-Rake::TestTask.new("test") do |test|
+Rake::TestTask.new("test" => "assets:compile") do |test|
   test.pattern = "test/**/*_test.rb"
 end
 
-Rake::TestTask.new("test:unit") do |test|
+Rake::TestTask.new("test:unit" => "assets:compile") do |test|
   test.pattern = "test/unit/**/*_test.rb"
 end
 
-Rake::TestTask.new("test:integration") do |test|
+Rake::TestTask.new("test:integration" => "assets:compile") do |test|
   test.pattern = "test/integration/**/*_test.rb"
 end
 
