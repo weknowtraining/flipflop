@@ -9,6 +9,10 @@ describe Flipflop do
     @app
   end
 
+  after do
+    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
+  end
+
   describe "middleware" do
     it "should include cache middleware" do
       middlewares = Rails.application.middleware.map(&:klass)

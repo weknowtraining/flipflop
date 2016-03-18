@@ -13,6 +13,10 @@ describe Flipflop do
     @app
   end
 
+  after do
+    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
+  end
+
   describe "outside development and test" do
     before do
       Rails.env.stub(:test?, false) do
