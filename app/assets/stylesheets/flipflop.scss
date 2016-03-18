@@ -7,7 +7,6 @@ $enable-transitions: true;
 
 @import "bootstrap/reboot";
 @import "bootstrap/type";
-@import "bootstrap/grid";
 @import "bootstrap/tables";
 @import "bootstrap/buttons";
 
@@ -15,7 +14,7 @@ $enable-transitions: true;
 @import "bootstrap/labels";
 
 section.flipflop {
-  @extend .container-fluid;
+  @include make-container(); /* @extend .container-fluid; */
   margin: 5rem 0 0;
 
   table {

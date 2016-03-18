@@ -20,7 +20,7 @@ namespace :assets do
   stylesheet_file = "flipflop.css"
   stylesheet_path = stylesheets_path + "/" + stylesheet_file
 
-  task :compile do
+  task :compile => :clean do
     require "bundler/setup"
     require "flipflop"
     require "sprockets"
