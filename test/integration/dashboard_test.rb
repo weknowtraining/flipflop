@@ -106,6 +106,24 @@ describe Flipflop do
           refute has_selector?("td[data-strategy=cookie] input.active[type=submit]")
         end
       end
+
+      it "should enable feature after in spite of redefinition and reordering" do
+        Flipflop::FeatureSet.current.instance_variable_set(:@strategies, {})
+        Module.new do
+          extend Flipflop::Configurable
+          strategy :active_record, description: "Store in database."
+          strategy :cookie, description: "Store in cookie."
+        end
+
+        within("tr[data-feature=world-domination] td[data-strategy=cookie]") do
+          click_on "on"
+        end
+
+        within("tr[data-feature=world-domination]") do
+          assert_equal "on", first("td.status").text
+          assert_equal "on", first("td[data-strategy=cookie] input.active[type=submit]").value
+        end
+      end
     end
 
     describe "with active record strategy" do
@@ -143,6 +161,24 @@ describe Flipflop do
         within("tr[data-feature=world-domination]") do
           assert_equal "off", first("td.status").text
           refute has_selector?("td[data-strategy=active-record] input.active[type=submit]")
+        end
+      end
+
+      it "should enable feature after in spite of redefinition and reordering" do
+        Flipflop::FeatureSet.current.instance_variable_set(:@strategies, {})
+        Module.new do
+          extend Flipflop::Configurable
+          strategy :active_record, description: "Store in database."
+          strategy :cookie, description: "Store in cookie."
+        end
+
+        within("tr[data-feature=world-domination] td[data-strategy=active-record]") do
+          click_on "on"
+        end
+
+        within("tr[data-feature=world-domination]") do
+          assert_equal "on", first("td.status").text
+          assert_equal "on", first("td[data-strategy=active-record] input.active[type=submit]").value
         end
       end
     end
