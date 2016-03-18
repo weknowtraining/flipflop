@@ -56,12 +56,18 @@ module Flipflop
 
     def add(feature)
       @@lock.synchronize do
+        if @features.has_key?(feature.key)
+          raise FeatureError.new(feature.key, "already defined")
+        end
         @features[feature.key] = feature.freeze
       end
     end
 
     def use(strategy)
       @@lock.synchronize do
+        if @strategies.has_key?(strategy.key)
+          raise StrategyError.new(strategy.name, "(#{strategy.class}) already defined with identical options")
+        end
         @strategies[strategy.key] = strategy.freeze
       end
     end

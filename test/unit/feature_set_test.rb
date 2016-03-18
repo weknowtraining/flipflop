@@ -104,6 +104,20 @@ describe Flipflop::FeatureSet do
       subject.add(feature = Flipflop::FeatureDefinition.new(:feature))
       assert subject.feature(feature.key).frozen?
     end
+
+    it "should raise if feature with same key is added" do
+      subject.add(Flipflop::FeatureDefinition.new(:feature))
+      assert_raises Flipflop::FeatureError do
+        subject.add(Flipflop::FeatureDefinition.new(:feature))
+      end
+    end
+
+    it "should raise with message if feature with same key is added" do
+      subject.add(Flipflop::FeatureDefinition.new(:feature))
+      assert_raises Flipflop::FeatureError do
+        subject.add(Flipflop::FeatureDefinition.new(:feature))
+      end
+    end
   end
 
   describe "use" do
@@ -115,6 +129,20 @@ describe Flipflop::FeatureSet do
     it "should freeze strategy" do
       subject.use(strategy = NullStrategy.new)
       assert subject.strategy(strategy.key).frozen?
+    end
+
+    it "should raise if strategy with same key is added" do
+      subject.use(NullStrategy.new)
+      assert_raises Flipflop::StrategyError do
+        subject.use(NullStrategy.new)
+      end
+    end
+
+    it "should raise with message if strategy with same key is added" do
+      subject.use(NullStrategy.new)
+      assert_raises Flipflop::StrategyError do
+        subject.use(NullStrategy.new)
+      end
     end
   end
 

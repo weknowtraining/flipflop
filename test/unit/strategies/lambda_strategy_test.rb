@@ -20,7 +20,7 @@ describe Flipflop::Strategies::LambdaStrategy do
     end
 
     it "should have unique key" do
-      assert_match /^\d+$/, subject.key
+      assert_match /^\w+$/, subject.key
     end
   end
 

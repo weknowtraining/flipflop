@@ -11,6 +11,8 @@ require "flipflop/feature_definition"
 require "flipflop/feature_set"
 
 require "flipflop/strategies/abstract_strategy"
+require "flipflop/strategies/options_hasher"
+
 require "flipflop/strategies/active_record_strategy"
 require "flipflop/strategies/cookie_strategy"
 require "flipflop/strategies/default_strategy"

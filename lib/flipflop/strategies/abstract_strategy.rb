@@ -35,12 +35,17 @@ module Flipflop
         end
       end
 
-      attr_reader :name, :description
+      attr_reader :key, :name, :description
 
       def initialize(**options)
+        # Generate key before setting instance that should be excluded from
+        # unique key generation.
+        @key = OptionsHasher.new(self).generate
+
         @name = (options.delete(:name) || self.class.default_name).freeze
         @description = (options.delete(:description) || self.class.default_description).freeze
         @hidden = !!options.delete(:hidden) || false
+
         if options.any?
           raise StrategyError.new(name, "did not understand option #{options.keys.map(&:inspect) * ', '}")
         end
@@ -48,12 +53,6 @@ module Flipflop
 
       def hidden?
         @hidden
-      end
-
-      def key
-        # TODO: Object ID changes if the feature definitions are reloaded. Maybe
-        # we can use the index instead?
-        object_id.to_s
       end
 
       # Return true iff this strategy is able to switch features on/off.

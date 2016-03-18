@@ -19,7 +19,7 @@ describe Flipflop::Strategies::TestStrategy do
     end
 
     it "should have unique key" do
-      assert_match /^\d+$/, subject.key
+      assert_match /^\w+$/, subject.key
     end
 
     describe "with enabled feature" do

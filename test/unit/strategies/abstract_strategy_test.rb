@@ -27,7 +27,7 @@ describe Flipflop::Strategies::AbstractStrategy do
     end
 
     it "should have unique key" do
-      assert_match /^\d+$/, subject.key
+      assert_match /^\w+$/, subject.key
     end
 
     describe "request" do
