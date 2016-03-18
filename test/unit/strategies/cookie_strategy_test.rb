@@ -33,7 +33,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with enabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_name, :one)] = "1"
+        subject.send(:request).cookie_jar[subject.send(:cookie_key, :one)] = "1"
       end
 
       it "should have feature enabled" do
@@ -53,7 +53,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with disabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_name, :two)] = "0"
+        subject.send(:request).cookie_jar[subject.send(:cookie_key, :two)] = "0"
       end
 
       it "should not have feature enabled" do
@@ -88,13 +88,14 @@ describe Flipflop::Strategies::CookieStrategy do
           domain: :all,
           path: "/foo",
           httponly: true,
+          prefix: :my_cookie_,
         ).freeze
       end
 
       it "should pass options when setting value" do
         subject.switch!(:one, true)
         subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=1; domain=.example.com; path=/foo; HttpOnly",
+        assert_equal "my_cookie_one=1; domain=.example.com; path=/foo; HttpOnly",
           headers["Set-Cookie"]
       end
 
@@ -102,7 +103,7 @@ describe Flipflop::Strategies::CookieStrategy do
         subject.switch!(:one, true)
         subject.clear!(:one)
         subject.send(:request).cookie_jar.write(headers = {})
-        assert_equal "flipflop_one=; domain=.example.com; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
+        assert_equal "my_cookie_one=; domain=.example.com; path=/foo; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 -0000; HttpOnly",
           headers["Set-Cookie"]
       end
     end

@@ -56,6 +56,22 @@ describe Flipflop::Strategies::QueryStringStrategy do
         assert_nil subject.enabled?(:three)
       end
     end
+
+    describe "with options" do
+      subject do
+        Flipflop::Strategies::QueryStringStrategy.new(
+          prefix: :my_feature_,
+        ).freeze
+      end
+
+      before do
+        subject.send(:request).params[:my_feature_one] = "1"
+      end
+
+      it "should use prefix to resolve parameters" do
+        assert_equal true, subject.enabled?(:one)
+      end
+    end
   end
 
   describe "outside request context" do

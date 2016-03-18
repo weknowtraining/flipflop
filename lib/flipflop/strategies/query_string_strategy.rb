@@ -7,10 +7,21 @@ module Flipflop
         end
       end
 
+      def initialize(**options)
+        @prefix = options.delete(:prefix).to_s.freeze
+        super(**options)
+      end
+
       def enabled?(feature)
         return unless request?
-        return unless request.params.has_key?(feature)
-        request.params[feature].to_s != "0"
+        return unless request.params.has_key?(param_key(feature))
+        request.params[param_key(feature)].to_s != "0"
+      end
+
+      protected
+
+      def param_key(feature)
+        @prefix + feature.to_s
       end
     end
   end

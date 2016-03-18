@@ -33,7 +33,7 @@ describe Flipflop::Strategies::SessionStrategy do
 
     describe "with enabled feature" do
       before do
-        subject.send(:request).session[:one] = true
+        subject.send(:request).session["one"] = true
       end
 
       it "should have feature enabled" do
@@ -53,7 +53,7 @@ describe Flipflop::Strategies::SessionStrategy do
 
     describe "with disabled feature" do
       before do
-        subject.send(:request).session[:two] = false
+        subject.send(:request).session["two"] = false
       end
 
       it "should not have feature enabled" do
@@ -79,6 +79,22 @@ describe Flipflop::Strategies::SessionStrategy do
       it "should be able to switch feature on" do
         subject.switch!(:three, true)
         assert_equal true, subject.enabled?(:three)
+      end
+    end
+
+    describe "with options" do
+      subject do
+        Flipflop::Strategies::SessionStrategy.new(
+          prefix: :my_feature_,
+        ).freeze
+      end
+
+      before do
+        subject.send(:request).session["my_feature_one"] = true
+      end
+
+      it "should use prefix to resolve parameters" do
+        assert_equal true, subject.enabled?(:one)
       end
     end
   end

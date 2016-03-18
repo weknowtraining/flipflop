@@ -7,22 +7,33 @@ module Flipflop
         end
       end
 
+      def initialize(**options)
+        @prefix = options.delete(:prefix).to_s.freeze
+        super(**options)
+      end
+
       def switchable?
         request?
       end
 
       def enabled?(feature)
         return unless request?
-        return unless request.session.has_key?(feature)
-        request.session[feature]
+        return unless request.session.has_key?(variable_key(feature))
+        request.session[variable_key(feature)] == true
       end
 
       def switch!(feature, enabled)
-        request.session[feature] = enabled
+        request.session[variable_key(feature)] = enabled
       end
 
       def clear!(feature)
-        request.session.delete(feature)
+        request.session.delete(variable_key(feature))
+      end
+
+      protected
+
+      def variable_key(feature)
+        @prefix + feature.to_s
       end
     end
   end
