@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.license  = "MIT"
 
   s.add_dependency("activesupport", ">= 4.0")
-  if ENV["CONTINUOUS_INTEGRATION"]
+if ENV["CONTINUOUS_INTEGRATION"]
   s.files         = `git ls-files`.split("\n").map { |f| f.sub(".scss", ".css") }
 else
   s.add_dependency("bootstrap", "= 4.0.0.alpha3")
