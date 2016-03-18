@@ -33,7 +33,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with enabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_key, :one)] = "1"
+        subject.send(:request).cookie_jar["one"] = "1"
       end
 
       it "should have feature enabled" do
@@ -53,7 +53,7 @@ describe Flipflop::Strategies::CookieStrategy do
 
     describe "with disabled feature" do
       before do
-        subject.send(:request).cookie_jar[subject.send(:cookie_key, :two)] = "0"
+        subject.send(:request).cookie_jar["two"] = "0"
       end
 
       it "should not have feature enabled" do
@@ -90,6 +90,11 @@ describe Flipflop::Strategies::CookieStrategy do
           httponly: true,
           prefix: :my_cookie_,
         ).freeze
+      end
+
+      it "should use prefix to resolve parameters" do
+        subject.send(:request).cookie_jar["my_cookie_one"] = "1"
+        assert_equal true, subject.enabled?(:one)
       end
 
       it "should pass options when setting value" do

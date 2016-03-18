@@ -10,7 +10,7 @@ module Flipflop
       def initialize(**options)
         # TODO: Support :expires as a runtime-evaluated option?
         @options = options.extract!(:path, :domain, :secure, :httponly).freeze
-        @prefix = (options.delete(:prefix) || "flipflop_").to_s.freeze
+        @prefix = options.delete(:prefix).to_s.freeze
         super(**options)
       end
 
