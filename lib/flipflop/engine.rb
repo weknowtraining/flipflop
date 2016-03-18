@@ -1,5 +1,7 @@
 module Flipflop
   class Engine < ::Rails::Engine
+    attr_accessor :rake_task_executing
+
     isolate_namespace Flipflop
 
     config.app_middleware.insert_after ActionDispatch::Callbacks,
@@ -23,15 +25,11 @@ module Flipflop
     end
 
     initializer "flipflop.dashboard", after: "flipflop.features_reloader" do |app|
+      next if rake_task_executing
       if actions = config.flipflop.dashboard_access_filter
         to_prepare do
           Flipflop::FeaturesController.before_action(*actions)
           Flipflop::StrategiesController.before_action(*actions)
-        end
-      else
-        unless defined?(Rails::Generators) or defined?(Rake)
-          warn("WARNING: You have not set `config.flipflop.dashboard_access_filter`; " +
-               "the Flipflop dashboard is now always public!")
         end
       end
     end
@@ -39,6 +37,12 @@ module Flipflop
     initializer "flipflop.request_interceptor" do |app|
       interceptor = Strategies::AbstractStrategy::RequestInterceptor
       ActionController::Base.send(:include, interceptor)
+    end
+
+    def run_tasks_blocks(app)
+      # Skip initialization if we're in a rake task.
+      self.rake_task_executing = true
+      super
     end
 
     private
