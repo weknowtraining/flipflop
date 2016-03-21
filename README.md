@@ -153,7 +153,8 @@ Flipflop.configure do
 end
 ```
 
-You can define your own custom strategies by inheriting from `Flipflop::Strategies::AbstractStrategy`:
+You can define your own custom strategies by inheriting from
+`Flipflop::Strategies::AbstractStrategy`:
 
 ```ruby
 class UserPreferenceStrategy < Flipflop::Strategies::AbstractStrategy
@@ -201,6 +202,23 @@ Use it in `config/features.rb`:
 ```ruby
 Flipflop.configure do
   strategy UserPreferenceStrategy # name: "my strategy", description: "..."
+end
+```
+
+If you define your class inside `Flipflop::Strategies`, you can use the
+shorthand name to refer to your strategy:
+
+```ruby
+module Flipflop::Strategies
+  class UserPreferenceStrategy < AbstractStrategy
+    # ...
+  end
+end
+```
+
+```ruby
+Flipflop.configure do
+  strategy :user_preference
 end
 ```
 
