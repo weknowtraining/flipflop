@@ -6,8 +6,9 @@ Flipflop.configure do
 
   # Other strategies:
   #
-  # strategy :session
   # strategy :query_string
+  # strategy :redis
+  # strategy :session
   #
   # strategy :my_strategy do |feature|
   #   # ... your custom code here; return true/false/nil.

@@ -8,7 +8,7 @@ module Flipflop
       end
 
       def initialize(**options)
-        @class = options.delete(:class) || "Flipflop::Feature"
+        @class = options.delete(:class) || ::Flipflop::Feature
         if !@class.kind_of?(Class)
           @class = ActiveSupport::Inflector.constantize(@class.to_s)
         end

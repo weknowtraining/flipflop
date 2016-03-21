@@ -34,6 +34,6 @@ namespace :assets do
   end
 
   task :clean do
-    FileUtils.rm(stylesheet_path)
+    FileUtils.rm(stylesheet_path) rescue nil
   end
 end

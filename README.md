@@ -82,6 +82,9 @@ The following strategies are provided:
     * `:httponly` – Whether the cookies are accessible via scripting or only HTTP. Default is `false`.
 * `:query_string` – Interpret query string parameters as features. This strategy is only used for resolving. It does not allow switching features on/off.
     * `:prefix` – String prefix for all query string parameters. Defaults to no prefix.
+* `:redis` – Save feature settings in Redis.
+    * `:client` – Use the specified Redis client instead of `Redis.new`.
+    * `:prefix` – String prefix for all Redis keys. Defaults to no prefix.
 * `:session` – Save feature settings in the current user's application session.
     * `:prefix` – String prefix for all session variables. Defaults to no prefix.
 * `:default` – Not strictly needed, all feature defaults will be applied if no strategies match a feature. Include this strategy to determine the order of using the default value, and to make it appear in the dashboard.

@@ -18,6 +18,7 @@ require "flipflop/strategies/cookie_strategy"
 require "flipflop/strategies/default_strategy"
 require "flipflop/strategies/lambda_strategy"
 require "flipflop/strategies/query_string_strategy"
+require "flipflop/strategies/redis_strategy"
 require "flipflop/strategies/session_strategy"
 require "flipflop/strategies/test_strategy"
 

@@ -15,7 +15,7 @@ module Flipflop
       def enabled?(feature)
         return unless request?
         return unless request.params.has_key?(param_key(feature))
-        request.params[param_key(feature)].to_s != "0"
+        request.params[param_key(feature)] != "0"
       end
 
       protected
