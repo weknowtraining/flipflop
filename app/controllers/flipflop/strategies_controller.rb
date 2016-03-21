@@ -1,6 +1,5 @@
 module Flipflop
   class StrategiesController < ApplicationController
-    include EnvironmentFilters
     include Engine.routes.url_helpers
 
     def update

@@ -10,12 +10,27 @@ class Flipflop::InstallGenerator < Rails::Generators::Base
   end
 
   def configure_dashboard
-    environment <<-CONFIG
-# Replace this with your own 'before_action' filter in ApplicationController
-    # to implement access control for the Flipflop dashboard, or provide a
-    # filter as lambda directly.
-    config.flipflop.dashboard_access_filter = :require_development
+    comment = <<-RUBY
+# Replace with a lambda or method name defined in ApplicationController
+# to implement access control for the Flipflop dashboard.
+RUBY
 
-CONFIG
+    forbidden = <<-RUBY
+config.flipflop.dashboard_access_filter = -> { head :forbidden }
+RUBY
+
+    allowed = <<-RUBY
+config.flipflop.dashboard_access_filter = nil
+RUBY
+
+    environment(indent(comment + forbidden + "\n", 4).lstrip)
+    environment(indent(comment + allowed + "\n", 2).lstrip, env: [:development, :test])
+  end
+
+  private
+
+  def indent(content, multiplier = 2)
+    spaces = " " * multiplier
+    content.each_line.map {|line| line.blank? ? line : "#{spaces}#{line}" }.join
   end
 end

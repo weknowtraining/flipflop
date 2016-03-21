@@ -17,18 +17,6 @@ describe Flipflop do
     Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
   end
 
-  describe "outside development and test" do
-    before do
-      Rails.env.stub(:test?, false) do
-        visit "/flipflop"
-      end
-    end
-
-    it "should be forbidden" do
-      assert_equal 403, page.status_code
-    end
-  end
-
   describe "without features" do
     before do
       visit "/flipflop"

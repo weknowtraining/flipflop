@@ -1,7 +1,5 @@
 module Flipflop
   class FeaturesController < ApplicationController
-    include EnvironmentFilters
-
     layout "flipflop"
 
     def index
