@@ -8,7 +8,7 @@ application functionality at run-time. It is originally based on
 * an improved dashboard
 * thread safety
 * better database performance due to per-request caching, enabled by default
-* more strategies (query strings, sessions, custom code)
+* more strategies (Redis, query strings, sessions, custom code)
 * more strategy options (cookie options, strategy names and descriptions, custom database models)
 * the ability to use the same strategy twice, with different options
 * configuration in a fixed location (`config/features.rb`) that is usable even if you don't use the database strategy
@@ -18,7 +18,7 @@ application functionality at run-time. It is originally based on
 You can configure strategy layers that will evaluate if a feature is currently
 enabled or disabled. Available strategies are:
 * a per-feature default setting
-* database (with Active Record), to flipflop features site-wide for all users
+* database (with Active Record or Redis), to flipflop features site-wide for all users
 * cookie or session, to flipflop features for single users
 * query string parameters, to flipflop features occasionally (in development mode for example)
 * custom strategy code
