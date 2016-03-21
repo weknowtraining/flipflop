@@ -88,11 +88,16 @@ The following strategies are provided:
 * `:session` – Save feature settings in the current user's application session.
     * `:prefix` – String prefix for all session variables. Defaults to no prefix.
 * `:default` – Not strictly needed, all feature defaults will be applied if no strategies match a feature. Include this strategy to determine the order of using the default value, and to make it appear in the dashboard.
+* `:test` – Simple strategy that stores features in memory. Useful for testing. If you call `Flipflop::FeatureSet.current.test!` this strategy is enabled and replaces all configured strategies.
 
 All strategies support these options, to change the appearance of the dashboard:
 * `:name` – The name of the strategy. Defaults to the name of the selected strategy.
 * `:description` – The description of the strategy. Every strategy has a default description.
 * `:hidden` – Optionally hides the strategy from the dashboard. Default is `false`.
+
+The same strategy type can be used multiple times, as long as the options are
+different. To prevent subtle bugs, an error is raised if two identical
+strategies are configured.
 
 ## Checking if a feature is enabled
 
