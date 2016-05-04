@@ -89,8 +89,14 @@ class TestApp
   def migrate!
     ActiveRecord::Base.establish_connection
 
-    ActiveRecord::Tasks::DatabaseTasks.create_current
+    silence_stdout { ActiveRecord::Tasks::DatabaseTasks.create_current }
     ActiveRecord::Migration.verbose = false
     ActiveRecord::Migrator.migrate(Rails.application.paths["db/migrate"].to_a)
+  end
+
+  def silence_stdout
+    stdout, $stdout = $stdout, StringIO.new
+    yield rescue nil
+    $stdout = stdout
   end
 end
