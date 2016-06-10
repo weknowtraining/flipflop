@@ -73,7 +73,7 @@ your server after making changes.
 
 The following strategies are provided:
 * `:active_record` – Save feature settings in the database.
-    * `:class` – Provide the feature model. `Flipflop::Feature` by default (which uses the table `features`). Honors `default_scope` when features are resolved or switched on/off.
+    * `:class` – Provide the feature model. `Flipflop::Feature` by default (which uses the table `flipflop_features`). Honors `default_scope` when features are resolved or switched on/off.
 * `:cookie` – Save feature settings in browser cookies for the current user.
     * `:prefix` – String prefix for all cookie names. Defaults to no prefix.
     * `:path` – The path for which the cookies apply. Defaults to the root of the application.
