@@ -1,15 +1,13 @@
 module Flipflop
   class StrategiesController < ApplicationController
-    include Engine.routes.url_helpers
-
     def update
       strategy.switch!(feature_key, enable?)
-      redirect_to(flipflop.features_url)
+      redirect_to(features_url)
     end
 
     def destroy
       strategy.clear!(feature_key)
-      redirect_to(flipflop.features_url)
+      redirect_to(features_url)
     end
 
     private
