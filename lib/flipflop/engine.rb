@@ -9,8 +9,10 @@ module Flipflop
 
     config.flipflop = ActiveSupport::OrderedOptions.new
 
-    initializer "flipflop.assets" do |app|
-      config.assets.precompile += ["flipflop.css"]
+    if Rails.application.assets
+      initializer "flipflop.assets" do |app|
+        config.assets.precompile += ["flipflop.css"]
+      end
     end
 
     initializer "flipflop.features_path" do |app|

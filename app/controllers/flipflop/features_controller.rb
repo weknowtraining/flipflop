@@ -1,7 +1,5 @@
 module Flipflop
-  class FeaturesController < ApplicationController
-    layout "flipflop"
-
+  class FeaturesController < ActionController::Base
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
     end

@@ -1,5 +1,5 @@
 module Flipflop
-  class StrategiesController < ApplicationController
+  class StrategiesController < ActionController::Base
     def update
       strategy.switch!(feature_key, enable?)
       redirect_to(features_url)
