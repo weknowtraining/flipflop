@@ -1,8 +1,7 @@
 module Flipflop
-  class FeaturesController < ApplicationController
-    layout "flipflop"
-
+  class FeaturesController < ActionController::Base
     def index
+      @method_override_middleware = Rails.application.middleware.middlewares.include?(Rack::MethodOverride)
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
     end
 
