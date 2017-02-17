@@ -22,6 +22,10 @@ describe Flipflop do
       visit "/flipflop"
     end
 
+    it "should show feature header" do
+      assert_equal "My Test App Features", first("h1").text
+    end
+
     it "should show feature table with header" do
       assert_equal ["Cookie", "Active record", "Default"],
         all("thead th").map(&:text)[3..-1]
@@ -45,6 +49,10 @@ describe Flipflop do
       Flipflop::Feature.delete_all
 
       visit "/flipflop"
+    end
+
+    it "should show feature header" do
+      assert_equal "My Test App Features", first("h1").text
     end
 
     it "should show feature rows" do

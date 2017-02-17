@@ -40,8 +40,9 @@ end
 class TestApp
   class << self
     def new
-      ActiveSupport::Dependencies.remove_constant("App")
-      super.tap do |current|
+      name = "my_test_app"
+      ActiveSupport::Dependencies.remove_constant(name.camelize)
+      super(name).tap do |current|
         current.create!
         current.load!
         current.migrate!
@@ -50,15 +51,21 @@ class TestApp
     end
   end
 
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
   def create!
     require "rails/generators"
     require "rails/generators/rails/app/app_generator"
     require "generators/flipflop/install/install_generator"
 
-    FileUtils.rm_rf(File.expand_path("../../tmp/app", __FILE__))
+    FileUtils.rm_rf(File.expand_path("../../" + path, __FILE__))
     Dir.chdir(File.expand_path("../..", __FILE__))
 
-    Rails::Generators::AppGenerator.new(["tmp/app"],
+    Rails::Generators::AppGenerator.new([path],
       quiet: true,
       api: ENV["RAILS_API_ONLY"].to_i.nonzero?,
       skip_active_job: true,
@@ -81,7 +88,7 @@ class TestApp
     ENV["RAILS_ENV"] = "test"
     require "rails"
     require "flipflop/engine"
-    require File.expand_path("../../tmp/app/config/environment", __FILE__)
+    require File.expand_path("../../#{path}/config/environment", __FILE__)
     ActiveSupport::Dependencies.mechanism = :load
     load(Rails.application.paths["config/features.rb"].existent.first)
     require "capybara/rails"
@@ -99,5 +106,9 @@ class TestApp
     stdout, $stdout = $stdout, StringIO.new
     yield rescue nil
     $stdout = stdout
+  end
+
+  def path
+    "tmp/" + name
   end
 end
