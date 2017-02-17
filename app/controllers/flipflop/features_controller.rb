@@ -1,5 +1,5 @@
 module Flipflop
-  class FeaturesController < ActionController::Base
+  class FeaturesController < defined?(ApplicationController) ? ApplicationController : ActionController::Base
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
     end
