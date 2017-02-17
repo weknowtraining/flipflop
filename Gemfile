@@ -17,6 +17,9 @@ group :test do
   gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
 
+  # Nokogiri 1.7+ requires Ruby 2.1.
+  gem "nokogiri", "< 1.7"
+
   if ENV["RAILS_VERSION"] == "4.0"
     gem "minitest-rails", platform: :jruby
   end
