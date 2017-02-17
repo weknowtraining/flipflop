@@ -1,22 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <head><title></title>
-    <% if Rails.application.assets %>
-      <%= stylesheet_link_tag :flipflop %>
-    <% else %>
-      <style>
-        <%= render partial: 'flipflop/stylesheets/flipflop.css' %>
-      </style>
-    <% end %>
+  <head>
+    <title><%= Rails.application.class.name %> Features</title>
+    <style><%= render partial: "flipflop/stylesheets/flipflop.css" %></style>
   </head>
   <body>
     <section class="flipflop">
       <h1>Feature Flipflop</h1>
-      <% unless @method_override_middleware %>
-        <div class="alert alert-danger" role="alert">
-          You do not seem to have <strong>Rack::MethodOverride</strong> in your middleware stack. This often has to be added separately your Rails application is configured as a "API-only" application. Manipulating features will not work without it.
-        </div>
-      <% end %>
       <table>
         <thead>
           <tr>

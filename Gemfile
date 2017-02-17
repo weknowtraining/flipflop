@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 gemspec
 
-gem "bootstrap", "= 4.0.0.alpha6"
-
 group :test do
   version = ENV["RAILS_VERSION"] || "master"
   if version == "master"
@@ -12,6 +10,7 @@ group :test do
     gem "rails", "~> #{version}.0"
   end
 
+  gem "bootstrap", "= 4.0.0.alpha6", require: false
   gem "sqlite3", ">= 1.3", platform: :ruby
   gem "fakeredis"
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby

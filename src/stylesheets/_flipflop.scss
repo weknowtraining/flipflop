@@ -1,5 +1,3 @@
-// Remember! Compile using 'rake assets:compile' when working on this file
-
 $enable-transitions: true;
 
 @import "bootstrap/variables";
@@ -11,10 +9,9 @@ $enable-transitions: true;
 @import "bootstrap/type";
 @import "bootstrap/tables";
 @import "bootstrap/buttons";
-@import "bootstrap/alert";
 
 @import "bootstrap/button-group";
-@import "bootstrap/labels";
+@import "bootstrap/badge";
 
 section.flipflop {
   @include make-container(); /* @extend .container-fluid; */
@@ -81,10 +78,10 @@ section.flipflop {
 
         span {
           width: 2rem;
-          @extend .label;
-          @extend .label-pill;
-          &.on { @extend .label-success; }
-          &.off { @extend .label-default; }
+          @extend .badge;
+          @extend .badge-pill;
+          &.on { @extend .badge-success; }
+          &.off { @extend .badge-default; }
         }
       }
 

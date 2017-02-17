@@ -16,9 +16,9 @@ end
 task default: :test
 
 namespace :assets do
-  stylesheets_src_path = "src/assets/stylesheets"
-  stylesheets_dst_path = "app/assets/stylesheets"
-  stylesheet_file = "flipflop.css"
+  stylesheets_src_path = "src/stylesheets"
+  stylesheets_dst_path = "app/views/flipflop/stylesheets"
+  stylesheet_file = "_flipflop.css"
   stylesheet_dst_path = stylesheets_dst_path + "/" + stylesheet_file
 
   task :compile do

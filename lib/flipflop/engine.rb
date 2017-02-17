@@ -4,6 +4,11 @@ module Flipflop
 
     isolate_namespace Flipflop
 
+    # The following middleware needs to be inserted for this engine, because it
+    # may not be available in Rails API only apps.
+    middleware.use Rack::MethodOverride
+    middleware.use ActionDispatch::Cookies
+
     config.app_middleware.insert_after ActionDispatch::Callbacks,
       FeatureCache::Middleware
 
