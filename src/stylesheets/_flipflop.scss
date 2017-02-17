@@ -13,6 +13,8 @@ $enable-transitions: true;
 @import "bootstrap/button-group";
 @import "bootstrap/badge";
 
+@import "bootstrap/utilities/spacing";
+
 section.flipflop {
   @include make-container(); /* @extend .container-fluid; */
   margin: 5rem 0 0;
@@ -73,11 +75,11 @@ section.flipflop {
 
     tbody {
       td.status {
-        width: 2rem;
+        width: 2.2rem;
         font-size: 1.1rem;
 
         span {
-          width: 2rem;
+          width: 2.2rem;
           @extend .badge;
           @extend .badge-pill;
           &.on { @extend .badge-success; }
@@ -86,24 +88,25 @@ section.flipflop {
       }
 
       td.name {
-        min-width: 11rem;
+        min-width: 12rem;
         padding-top: 0.9rem;
         font-weight: bold;
       }
 
       td.description {
-        min-width: 11rem;
+        min-width: 12rem;
         padding-top: 0.9rem;
       }
 
       td.toggle {
-        min-width: 11rem;
+        min-width: 8rem;
 
         div.toolbar {
           @extend .btn-toolbar;
           margin-left: 0;
 
           div.group {
+            @extend .mr-1;
             @extend .btn-group;
             @extend .btn-group-sm;
 
