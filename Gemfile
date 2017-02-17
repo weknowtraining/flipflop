@@ -19,7 +19,7 @@ group :test do
 
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.1.0")
     # Nokogiri 1.7+ requires Ruby 2.1+.
-    gem "nokogiri", "< 1.7", ruby: "< 2.4"
+    gem "nokogiri", "< 1.7"
   end
 
   if ENV["RAILS_VERSION"] == "4.0"
