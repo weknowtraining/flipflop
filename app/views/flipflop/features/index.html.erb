@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= Rails.application.class.name %> Features</title>
+    <title><%= app_name = Rails.application.class.parent_name.underscore.titleize %> Features</title>
     <style><%= render partial: "flipflop/stylesheets/flipflop.css" %></style>
   </head>
   <body>
     <section class="flipflop">
-      <h1>Feature Flipflop</h1>
+      <h1><%= app_name %> Features</h1>
       <table>
         <thead>
           <tr>
