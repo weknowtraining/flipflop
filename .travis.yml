@@ -1,9 +1,6 @@
 language: ruby
 rvm:
-- 2.0
-- 2.1
-- 2.2
-- 2.3.0
+- 2.3
 - jruby-9.1.2.0
 - ruby-head
 - jruby-head
@@ -15,19 +12,19 @@ env:
 - RAILS_VERSION=master
 - RAILS_VERSION=master RAILS_API_ONLY=1
 matrix:
-  exclude:
+  include:
   - rvm: 2.0
-    env: RAILS_VERSION=5.0
+    env: RAILS_VERSION=4.1
+  - rvm: 2.1
+    env: RAILS_VERSION=4.1
+  - rvm: 2.2
+    env: RAILS_VERSION=4.1
   - rvm: 2.0
-    env: RAILS_VERSION=master
+    env: RAILS_VERSION=4.2
   - rvm: 2.1
-    env: RAILS_VERSION=5.0
-  - rvm: 2.1
-    env: RAILS_VERSION=master
+    env: RAILS_VERSION=4.2
   - rvm: 2.2
-    env: RAILS_VERSION=5.0
-  - rvm: 2.2
-    env: RAILS_VERSION=master
+    env: RAILS_VERSION=4.2
   allow_failures:
   - rvm: jruby-9.1.2.0
   - rvm: ruby-head
@@ -45,4 +42,4 @@ deploy:
   on:
     tags: true
     repo: voormedia/flipflop
-    ruby: 2.3.0
+    ruby: 2.3
