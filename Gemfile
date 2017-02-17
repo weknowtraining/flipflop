@@ -7,6 +7,7 @@ group :test do
   version = ENV["RAILS_VERSION"] || "master"
   if version == "master"
     gem "rails", github: "rails/rails"
+    gem "arel", github: "rails/arel"
   else
     gem "rails", "~> #{version}.0"
   end
