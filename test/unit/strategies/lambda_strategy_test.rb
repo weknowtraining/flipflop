@@ -113,9 +113,7 @@ describe Flipflop::Strategies::LambdaStrategy do
 
   describe "with non conforming return value" do
     subject do
-      Flipflop::Strategies::LambdaStrategy.new(lambda: ->(feature) {
-        return feature
-      }).freeze
+      Flipflop::Strategies::LambdaStrategy.new(lambda: -> (feature) {feature}).freeze
     end
 
     it "should raise error" do
