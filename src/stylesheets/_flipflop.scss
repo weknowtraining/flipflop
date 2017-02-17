@@ -113,6 +113,7 @@ section.flipflop {
             input[type=submit] {
               @extend .btn;
               @extend .btn-sm;
+              cursor: pointer;
               &.active { @extend .btn-primary; }
               &:not(.active) { @extend .btn-secondary; }
             }
