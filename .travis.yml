@@ -10,16 +10,18 @@ env:
 - RAILS_VERSION=master RAILS_API_ONLY=1
 - RAILS_VERSION=5.0
 - RAILS_VERSION=5.0 RAILS_API_ONLY=1
-- RAILS_VERSION=4.2
-- RAILS_VERSION=4.1
 matrix:
   include:
+  - rvm: 2.3.0
+    env: RAILS_VERSION=4.2
   - rvm: 2.2.6
     env: RAILS_VERSION=4.2
   - rvm: 2.1.9
     env: RAILS_VERSION=4.2
   - rvm: 2.0.0
     env: RAILS_VERSION=4.2
+  - rvm: 2.3.0
+    env: RAILS_VERSION=4.1
   - rvm: 2.2.6
     env: RAILS_VERSION=4.1
   - rvm: 2.1.9
