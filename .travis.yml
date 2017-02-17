@@ -11,20 +11,20 @@ rvm:
 env:
 - RAILS_VERSION=4.1
 - RAILS_VERSION=4.2
-- RAILS_VERSION=5.0.0.1
+- RAILS_VERSION=5.0
 - RAILS_VERSION=master
 matrix:
   exclude:
   - rvm: 2.0
-    env: RAILS_VERSION=5.0.0.1
+    env: RAILS_VERSION=5.0
   - rvm: 2.0
     env: RAILS_VERSION=master
   - rvm: 2.1
-    env: RAILS_VERSION=5.0.0.1
+    env: RAILS_VERSION=5.0
   - rvm: 2.1
     env: RAILS_VERSION=master
   - rvm: 2.2
-    env: RAILS_VERSION=5.0.0.1
+    env: RAILS_VERSION=5.0
   - rvm: 2.2
     env: RAILS_VERSION=master
   allow_failures:
