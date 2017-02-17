@@ -29,7 +29,7 @@ matrix:
     env: RAILS_VERSION=master
   allow_failures:
   - rvm: jruby-9.1.2.0
-  - rvm: rbx-head
+  - rvm: rbx
   - rvm: ruby-head
   - rvm: jruby-head
 notifications:
