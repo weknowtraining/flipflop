@@ -60,7 +60,7 @@ class TestApp
 
     Rails::Generators::AppGenerator.new(["tmp/app"],
       quiet: true,
-      api: true,
+      api: ENV["RAILS_API_ONLY"].to_i.nonzero?,
       skip_active_job: true,
       skip_bundle: true,
       skip_gemfile: true,
