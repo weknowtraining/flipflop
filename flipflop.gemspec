@@ -14,12 +14,7 @@ Gem::Specification.new do |s|
   s.license  = "MIT"
 
   s.add_dependency("activesupport", ">= 4.0")
-if ENV["CONTINUOUS_INTEGRATION"]
-  s.files         = `git ls-files`.split("\n").map { |f| f.sub(".scss", ".css") }
-else
-  s.add_dependency("bootstrap", "= 4.0.0.alpha5")
   s.files         = `git ls-files`.split("\n")
-end
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]

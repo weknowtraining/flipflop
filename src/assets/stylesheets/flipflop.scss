@@ -11,7 +11,7 @@ $enable-transitions: true;
 @import "bootstrap/buttons";
 
 @import "bootstrap/button-group";
-@import "bootstrap/labels";
+@import "bootstrap/badge";
 
 section.flipflop {
   @include make-container(); /* @extend .container-fluid; */
@@ -78,10 +78,10 @@ section.flipflop {
 
         span {
           width: 2rem;
-          @extend .label;
-          @extend .label-pill;
-          &.on { @extend .label-success; }
-          &.off { @extend .label-default; }
+          @extend .badge;
+          @extend .badge-pill;
+          &.on { @extend .badge-success; }
+          &.off { @extend .badge-default; }
         }
       }
 
