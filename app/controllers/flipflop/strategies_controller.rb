@@ -1,6 +1,6 @@
 module Flipflop
-  class StrategiesController < defined?(ApplicationController) ? ApplicationController : ActionController::Base
-    layout false
+  class StrategiesController < ApplicationController
+    include ActionController::RequestForgeryProtection
 
     def update
       strategy.switch!(feature_key, enable?)

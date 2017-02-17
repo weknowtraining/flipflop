@@ -1,9 +1,12 @@
 module Flipflop
-  class FeaturesController < defined?(ApplicationController) ? ApplicationController : ActionController::Base
-    layout false
+  class FeaturesController < ApplicationController
+    include ActionController::RequestForgeryProtection
+    include ActionController::Rendering
+    include ActionView::Rendering
 
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
+      render(:prefixes=>["flipflop/features", "application"], :template=>"index", :layout=>nil)
     end
 
     class FeaturesPresenter
