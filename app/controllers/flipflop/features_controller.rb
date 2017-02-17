@@ -6,7 +6,7 @@ module Flipflop
 
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
-      render(:prefixes=>["flipflop/features", "application"], :template=>"index", :layout=>nil)
+      render(layout: false)
     end
 
     class FeaturesPresenter
