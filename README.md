@@ -15,6 +15,7 @@ application functionality at run-time. It is originally based on
 * dashboard is inaccessible in production by default, for safety in case of misconfiguration
 * removes controller filters and view helpers, to promote uniform semantics to check for features (facilitates project-wide searching)
 * support for API only Rails apps
+* support for loading features from Rails engines
 
 You can configure strategy layers that will evaluate if a feature is currently
 enabled or disabled. Available strategies are:
