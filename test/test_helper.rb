@@ -136,7 +136,7 @@ class TestApp
     Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
     Flipflop::FeatureLoader.instance_variable_set(:@current, nil)
 
-    Rails.app_class.instance_variable_set(:@instance, nil)
+    Rails.app_class.instance_variable_set(:@instance, nil) if defined?(Rails.app_class)
     Rails.instance_variable_set(:@application, nil)
 
     ActiveSupport::Dependencies.remove_constant(name.camelize)
