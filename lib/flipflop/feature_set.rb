@@ -28,21 +28,19 @@ module Flipflop
     end
 
     def configure
-      @@lock.synchronize do
-        initialize
-        Module.new do
-          extend Configurable
-          instance_exec(&Proc.new)
-        end
-        @features.freeze
-        @strategies.freeze
+      Module.new do
+        extend Configurable
+        instance_exec(&Proc.new)
       end
       self
     end
 
-    def reset!
+    def replace
       @@lock.synchronize do
         initialize
+        yield if block_given?
+        @features.freeze
+        @strategies.freeze
       end
       self
     end

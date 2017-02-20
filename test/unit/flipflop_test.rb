@@ -2,22 +2,25 @@ require File.expand_path("../../test_helper", __FILE__)
 
 describe Flipflop do
   before do
-    Flipflop.configure do
-      feature :one, default: true
-      feature :two, default: false
+    Flipflop::FeatureSet.current.replace do
+      Flipflop.configure do
+        feature :one, default: true
+        feature :two, default: false
+      end
     end
   end
 
-  describe "configure" do
+  describe "replace" do
     before do
-      Flipflop.configure do
-        feature :config_feature, default: true
+      Flipflop::FeatureSet.current.replace do
+        Flipflop.configure do
+          feature :config_feature, default: true
+        end
       end
     end
 
     it "should reset feature set" do
-      Flipflop.configure do
-      end
+      Flipflop::FeatureSet.current.replace
       assert_equal [], Flipflop::FeatureSet.current.features
     end
 
@@ -57,9 +60,11 @@ describe Flipflop do
         end
       end
 
-      Flipflop.configure do
-        strategy counter
-        feature :one, default: true
+      Flipflop::FeatureSet.current.replace do
+        Flipflop.configure do
+          strategy counter
+          feature :one, default: true
+        end
       end
 
       begin

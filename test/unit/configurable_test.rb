@@ -2,7 +2,7 @@ require File.expand_path("../../test_helper", __FILE__)
 
 describe Flipflop::Configurable do
   subject do
-    Flipflop::FeatureSet.current.reset!
+    Flipflop::FeatureSet.current.send(:initialize)
     Module.new do
       extend Flipflop::Configurable
     end

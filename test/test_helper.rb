@@ -5,6 +5,7 @@ gem "minitest"
 require "minitest/autorun"
 
 require "action_controller"
+require "rails/generators"
 
 # Who is setting this to true? :o
 $VERBOSE = false
@@ -37,12 +38,35 @@ def reload_constant(name)
   Object.const_get(name)
 end
 
+class TestEngineGenerator < Rails::Generators::Base
+  source_root File.expand_path("../templates", __FILE__)
+
+  def copy_engine_file
+    copy_file "test_engine.rb", "lib/test_engine/test_engine.rb"
+  end
+
+  def copy_engine_features_file
+    copy_file "test_engine_features.rb", "lib/test_engine/config/features.rb"
+  end
+
+  def require_engine
+    environment "require 'test_engine/test_engine'"
+  end
+end
+
+class TestFeaturesGenerator < Rails::Generators::Base
+  source_root File.expand_path("../templates", __FILE__)
+
+  def copy_app_features_file
+    copy_file "test_app_features.rb", "config/features.rb"
+  end
+end
+
 class TestApp
   class << self
-    def new
+    def new(generators = [])
       name = "my_test_app"
-      ActiveSupport::Dependencies.remove_constant(name.camelize)
-      super(name).tap do |current|
+      super(name, generators).tap do |current|
         current.create!
         current.load!
         current.migrate!
@@ -51,14 +75,14 @@ class TestApp
     end
   end
 
-  attr_reader :name
+  attr_reader :name, :generators
 
-  def initialize(name)
+  def initialize(name, generators = [])
     @name = name
+    @generators = generators
   end
 
   def create!
-    require "rails/generators"
     require "rails/generators/rails/app/app_generator"
     require "generators/flipflop/install/install_generator"
 
@@ -82,15 +106,22 @@ class TestApp
     Flipflop::InstallGenerator.new([],
       quiet: true,
     ).invoke_all
+
+    generators.each do |generator|
+      generator.new([], quiet: true, force: true).invoke_all
+    end
   end
 
   def load!
     ENV["RAILS_ENV"] = "test"
     require "rails"
     require "flipflop/engine"
-    require File.expand_path("../../#{path}/config/environment", __FILE__)
+
+    load File.expand_path("../../#{path}/config/application.rb", __FILE__)
+    load File.expand_path("../../#{path}/config/environments/test.rb", __FILE__)
+    Rails.application.initialize!
+
     ActiveSupport::Dependencies.mechanism = :load
-    load(Rails.application.paths["config/features.rb"].existent.first)
     require "capybara/rails"
   end
 
@@ -101,6 +132,18 @@ class TestApp
     ActiveRecord::Migration.verbose = false
     ActiveRecord::Migrator.migrate(Rails.application.paths["db/migrate"].to_a)
   end
+
+  def unload!
+    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
+    Flipflop::FeatureLoader.instance_variable_set(:@current, nil)
+
+    Rails.app_class.instance_variable_set(:@instance, nil)
+    Rails.instance_variable_set(:@application, nil)
+
+    ActiveSupport::Dependencies.remove_constant(name.camelize)
+  end
+
+  private
 
   def silence_stdout
     stdout, $stdout = $stdout, StringIO.new

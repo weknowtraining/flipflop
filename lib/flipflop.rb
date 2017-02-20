@@ -8,6 +8,7 @@ require "flipflop/configurable"
 require "flipflop/facade"
 require "flipflop/feature_cache"
 require "flipflop/feature_definition"
+require "flipflop/feature_loader"
 require "flipflop/feature_set"
 
 require "flipflop/strategies/abstract_strategy"

@@ -260,6 +260,23 @@ config.flipflop.dashboard_access_filter = -> {
 }
 ```
 
+## Features in Rails engines
+
+You can use features in Rails engines. Simply tell Flipflop to load files from
+an additional file in an initializer. You can define features and strategies.
+Both will be merged with application features. You'll have to somewhat careful
+with defining strategies in the engine to avoid conflicts.
+
+```ruby
+class MyEngine < Rails::Engine
+  initializer "load_features" do
+    # Features from config/features.rb in your engine are merged with
+    # any application features.
+    FeatureLoader.current.append(self)
+  end
+end
+```
+
 ## Testing
 
 In your test environment, you typically want to keep your features. But to make

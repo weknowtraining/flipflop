@@ -2,12 +2,14 @@ require File.expand_path("../../../test_helper", __FILE__)
 
 describe Flipflop::Strategies::DefaultStrategy do
   before do
-    Flipflop.configure do
-      feature :one, default: true
-      feature :two
+    Flipflop::FeatureSet.current.replace do
+      Flipflop.configure do
+        feature :one, default: true
+        feature :two
+      end
     end
   end
-    
+
   describe "with defaults" do
     subject do
       Flipflop::Strategies::DefaultStrategy.new.freeze

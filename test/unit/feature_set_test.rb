@@ -19,7 +19,7 @@ end
 
 describe Flipflop::FeatureSet do
   subject do
-    Flipflop::FeatureSet.current.reset!
+    Flipflop::FeatureSet.current.send(:initialize)
     Flipflop::FeatureSet.current.tap do |set|
       set.add(Flipflop::FeatureDefinition.new(:one))
     end

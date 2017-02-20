@@ -15,13 +15,13 @@ module Flipflop
     config.flipflop = ActiveSupport::OrderedOptions.new
 
     initializer "flipflop.features_path" do |app|
-      app.paths.add("config/features.rb")
+      FeatureLoader.current.append(app)
     end
 
-    initializer "flipflop.features_reloader" do |app|
-      app.reloaders.push(reloader = feature_reloader(app))
+    initializer "flipflop.features_loader" do |app|
+      app.reloaders.push(FeatureLoader.current)
       to_prepare do
-        reloader.execute
+        FeatureLoader.current.execute
       end
     end
 
@@ -48,13 +48,6 @@ module Flipflop
     end
 
     private
-
-    def feature_reloader(app)
-      features = app.paths["config/features.rb"].existent
-      ActiveSupport::FileUpdateChecker.new(features) do
-        features.each { |path| load(path) }
-      end
-    end
 
     def to_prepare
       klass = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader

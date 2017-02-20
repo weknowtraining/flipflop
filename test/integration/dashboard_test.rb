@@ -9,12 +9,12 @@ describe Flipflop do
     @app = TestApp.new
   end
 
-  subject do
-    @app
+  after do
+    @app.unload!
   end
 
-  after do
-    Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
+  subject do
+    @app
   end
 
   describe "without features" do
