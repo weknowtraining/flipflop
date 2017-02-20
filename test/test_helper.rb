@@ -70,7 +70,6 @@ class TestApp
         current.create!
         current.load!
         current.migrate!
-        reload_constant("Flipflop::Feature")
       end
     end
   end
@@ -119,9 +118,9 @@ class TestApp
 
     load File.expand_path("../../#{path}/config/application.rb", __FILE__)
     load File.expand_path("../../#{path}/config/environments/test.rb", __FILE__)
+    Rails.application.config.cache_classes = false
     Rails.application.initialize!
 
-    ActiveSupport::Dependencies.mechanism = :load
     require "capybara/rails"
   end
 
@@ -141,6 +140,7 @@ class TestApp
     Rails.instance_variable_set(:@application, nil)
 
     ActiveSupport::Dependencies.remove_constant(name.camelize)
+    ActiveSupport::Dependencies.remove_constant("Flipflop::Feature")
   end
 
   private
