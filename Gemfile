@@ -13,7 +13,9 @@ group :test do
   gem "bootstrap", "= 4.0.0.alpha6", require: false
   gem "sqlite3", ">= 1.3", platform: :ruby
   gem "fakeredis"
-  gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
+  gem "activerecord-jdbcsqlite3-adapter", platform: :jruby,
+    github: "jruby/activerecord-jdbc-adapter", branch: "rails-5"
+
   gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
 
