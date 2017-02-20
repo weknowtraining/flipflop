@@ -99,14 +99,14 @@ section.flipflop {
       }
 
       td.toggle {
-        min-width: 8rem;
+        min-width: 10rem;
 
         div.toolbar {
           @extend .btn-toolbar;
           margin-left: 0;
 
           div.group {
-            @extend .mr-1;
+            @extend .mr-2;
             @extend .btn-group;
             @extend .btn-group-sm;
 
