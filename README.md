@@ -273,7 +273,7 @@ class MyEngine < Rails::Engine
   initializer "load_features" do
     # Features from config/features.rb in your engine are merged with
     # any application features.
-    FeatureLoader.current.append(self)
+    Flipflop::FeatureLoader.current.append(self)
   end
 end
 ```
