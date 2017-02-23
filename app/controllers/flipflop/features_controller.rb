@@ -3,10 +3,14 @@ module Flipflop
     include ActionController::RequestForgeryProtection
     include ActionController::Rendering
     include ActionView::Rendering
+    include ActionView::Layouts
+
+    # Allows overriding layout by inheriting from this controller.
+    layout false
 
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
-      render(layout: false)
+      render
     end
 
     class FeaturesPresenter
