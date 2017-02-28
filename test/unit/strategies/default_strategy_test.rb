@@ -19,6 +19,10 @@ describe Flipflop::Strategies::DefaultStrategy do
       assert_equal "default", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Default", subject.title
+    end
+
     it "should have no default description" do
       assert_equal "Uses feature default status.", subject.description
     end

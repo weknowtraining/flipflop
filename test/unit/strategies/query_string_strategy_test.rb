@@ -18,6 +18,10 @@ describe Flipflop::Strategies::QueryStringStrategy do
       assert_equal "query_string", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Query string", subject.title
+    end
+
     it "should not have default description" do
       assert_equal "Interprets query string parameters as features.",
         subject.description

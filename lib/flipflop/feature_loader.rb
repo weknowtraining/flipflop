@@ -31,7 +31,7 @@ module Flipflop
 
     def reload!
       @@lock.synchronize do
-        Flipflop.feature_set.replace do
+        Flipflop::FeatureSet.current.replace do
           @paths.each { |path| Kernel.load(path) }
         end
       end

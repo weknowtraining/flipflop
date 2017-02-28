@@ -16,6 +16,7 @@ application functionality at run-time. It is originally based on
 * removes controller filters and view helpers, to promote uniform semantics to check for features (facilitates project-wide searching)
 * support for API only Rails apps
 * support for loading features from Rails engines
+* support for feature groups
 
 You can configure strategy layers that will evaluate if a feature is currently
 enabled or disabled. Available strategies are:

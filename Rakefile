@@ -33,4 +33,19 @@ namespace :assets do
     environment.css_compressor = :scss
     File.write(stylesheet_dst_path, environment[stylesheet_file])
   end
+
+  task :watch do
+    require "listen"
+
+    listener = Listen.to(stylesheets_src_path, only: /\.scss$/) do
+      Rake::Task["assets:compile"].execute
+    end
+
+    $stderr.puts("Watching #{stylesheets_src_path} for changes...")
+
+    listener.start
+
+    Rake::Task["assets:compile"].execute
+    sleep
+  end
 end

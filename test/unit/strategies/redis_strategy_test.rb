@@ -16,6 +16,10 @@ describe Flipflop::Strategies::RedisStrategy do
       assert_equal "redis", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Redis", subject.title
+    end
+
     it "should have default description" do
       assert_equal "Stores features in Redis. Applies to all users.",
         subject.description

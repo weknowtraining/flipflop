@@ -10,6 +10,10 @@ describe Flipflop::Strategies::TestStrategy do
       assert_equal "test", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Test", subject.title
+    end
+
     it "should not have default description" do
       assert_nil subject.description
     end

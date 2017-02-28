@@ -18,6 +18,10 @@ describe Flipflop::Strategies::SessionStrategy do
       assert_equal "session", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Session", subject.title
+    end
+
     it "should have default description" do
       assert_equal "Stores features in the user session. Applies to current user.",
         subject.description

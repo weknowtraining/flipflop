@@ -11,20 +11,21 @@ group :test do
   end
 
   gem "bootstrap", "= 4.0.0.alpha6", require: false
+
+  gem "fakeredis", require: false
   gem "sqlite3", ">= 1.3", platform: :ruby
-  gem "fakeredis"
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby,
     github: "jruby/activerecord-jdbc-adapter", branch: "rails-5"
 
   gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
 
+  if Gem::Version.new(RUBY_VERSION) > Gem::Version.new("2.2.4")
+    gem "listen", ">= 3.0", require: false
+  end
+
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.1.0")
     # Nokogiri 1.7+ requires Ruby 2.1+.
     gem "nokogiri", "< 1.7"
-  end
-
-  if ENV["RAILS_VERSION"] == "4.0"
-    gem "minitest-rails", platform: :jruby
   end
 end

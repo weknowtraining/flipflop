@@ -15,7 +15,7 @@ module Flipflop
     private
 
     def enable?
-      params[:commit].to_s.downcase.include?("on")
+      params[:commit].to_s == "1"
     end
 
     def feature_key

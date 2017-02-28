@@ -35,7 +35,7 @@ module Flipflop
         end
       end
 
-      attr_reader :key, :name, :description
+      attr_reader :key, :name, :title, :description
 
       def initialize(**options)
         # Generate key before setting instance that should be excluded from
@@ -43,6 +43,7 @@ module Flipflop
         @key = OptionsHasher.new(self).generate
 
         @name = (options.delete(:name) || self.class.default_name).freeze
+        @title = @name.humanize.freeze
         @description = (options.delete(:description) || self.class.default_description).freeze
         @hidden = !!options.delete(:hidden) || false
 

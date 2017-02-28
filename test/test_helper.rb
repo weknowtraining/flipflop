@@ -62,6 +62,14 @@ class TestFeaturesGenerator < Rails::Generators::Base
   end
 end
 
+class TestLocaleGenerator < Rails::Generators::Base
+  source_root File.expand_path("../templates", __FILE__)
+
+  def copy_locale_file
+    copy_file "nl.yml", "config/locales/nl.yml"
+  end
+end
+
 class TestApp
   class << self
     def new(generators = [])
@@ -119,7 +127,11 @@ class TestApp
     load File.expand_path("../../#{path}/config/application.rb", __FILE__)
     load File.expand_path("../../#{path}/config/environments/test.rb", __FILE__)
     Rails.application.config.cache_classes = false
+    Rails.application.config.action_view.raise_on_missing_translations = true
+    Rails.application.config.i18n.enforce_available_locales = false
     Rails.application.initialize!
+
+    I18n.locale = :en
 
     require "capybara/rails"
   end
@@ -138,6 +150,7 @@ class TestApp
 
     Rails.app_class.instance_variable_set(:@instance, nil) if defined?(Rails.app_class)
     Rails.instance_variable_set(:@application, nil)
+    I18n::Railtie.instance_variable_set(:@i18n_inited, false)
 
     ActiveSupport::Dependencies.remove_constant(name.camelize)
     ActiveSupport::Dependencies.remove_constant("Flipflop::Feature")

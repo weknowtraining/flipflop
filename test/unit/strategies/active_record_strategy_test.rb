@@ -46,6 +46,10 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
       assert_equal "active_record", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Active record", subject.title
+    end
+
     it "should have default description" do
       assert_equal "Stores features in database. Applies to all users.",
         subject.description

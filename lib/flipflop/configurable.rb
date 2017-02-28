@@ -1,6 +1,16 @@
 module Flipflop
   module Configurable
+    attr_accessor :current_group
+
+    def group(group)
+      self.current_group = GroupDefinition.new(group)
+      yield
+    ensure
+      self.current_group = nil
+    end
+
     def feature(feature, **options)
+      options = options.merge(group: current_group)
       feature = FeatureDefinition.new(feature, **options)
       FeatureSet.current.add(feature)
     end

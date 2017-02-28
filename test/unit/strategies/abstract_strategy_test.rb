@@ -14,6 +14,10 @@ describe Flipflop::Strategies::AbstractStrategy do
       assert_equal "abstract", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Abstract", subject.title
+    end
+
     it "should have no default description" do
       assert_nil subject.description
     end
@@ -36,22 +40,12 @@ describe Flipflop::Strategies::AbstractStrategy do
         assert_equal 3, subject.send(:request)
       end
 
-      it "should raise if request is missing" do
+      it "should raise error with message if request is missing" do
         Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
-        assert_raises Flipflop::StrategyError do
+        error = assert_raises Flipflop::StrategyError do
           subject.send(:request)
         end
-      end
-
-      it "should raise with message if request is missing" do
-        Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
-        message = nil
-        begin
-          subject.send(:request)
-        rescue => err
-          message = err.message
-        end
-        assert_equal "Strategy 'abstract' required request, but was used outside request context.", message
+        assert_equal "Strategy 'abstract' required request, but was used outside request context.", error.message
       end
 
       it "should raise if request is missing in thread" do
@@ -88,6 +82,10 @@ describe Flipflop::Strategies::AbstractStrategy do
       assert_equal "strategy", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Strategy", subject.title
+    end
+
     it "should have specified description" do
       assert_equal "my strategy", subject.description
     end
@@ -105,20 +103,11 @@ describe Flipflop::Strategies::AbstractStrategy do
       ).freeze
     end
 
-    it "should raise error" do
-      assert_raises Flipflop::StrategyError do
+    it "should raise error with message" do
+      error = assert_raises Flipflop::StrategyError do
         subject
       end
-    end
-
-    it "should raise with message" do
-      message = nil
-      begin
-        subject
-      rescue => err
-        message = err.message
-      end
-      assert_equal "Strategy 'abstract' did not understand option :unknown, :other.", message
+      assert_equal "Strategy 'abstract' did not understand option :unknown, :other.", error.message
     end
   end
 end

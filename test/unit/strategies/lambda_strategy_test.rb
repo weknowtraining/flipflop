@@ -10,6 +10,10 @@ describe Flipflop::Strategies::LambdaStrategy do
       assert_equal "lambda", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Lambda", subject.title
+    end
+
     it "should not have default description" do
       assert_equal "Resolves feature settings with custom code.",
         subject.description
@@ -94,20 +98,11 @@ describe Flipflop::Strategies::LambdaStrategy do
       Flipflop::Strategies::LambdaStrategy.new(lambda: ->() { }).freeze
     end
 
-    it "should raise error" do
-      assert_raises Flipflop::StrategyError do
+    it "should raise error with message" do
+      error = assert_raises Flipflop::StrategyError do
         subject
       end
-    end
-
-    it "should raise with message" do
-      message = nil
-      begin
-        subject
-      rescue => err
-        message = err.message
-      end
-      assert_equal "Strategy 'lambda' has lambda with arity 0, expected 1 or -1.", message
+      assert_equal "Strategy 'lambda' has lambda with arity 0, expected 1 or -1.", error.message
     end
   end
 
@@ -116,20 +111,11 @@ describe Flipflop::Strategies::LambdaStrategy do
       Flipflop::Strategies::LambdaStrategy.new(lambda: -> (feature) {feature}).freeze
     end
 
-    it "should raise error" do
-      assert_raises Flipflop::StrategyError do
+    it "should raise error with message" do
+      error = assert_raises Flipflop::StrategyError do
         subject.enabled?(:one)
       end
-    end
-
-    it "should raise with message" do
-      message = nil
-      begin
-        subject.enabled?(:one)
-      rescue => err
-        message = err.message
-      end
-      assert_equal "Strategy 'lambda' returned invalid result :one for feature 'one'.", message
+      assert_equal "Strategy 'lambda' returned invalid result :one for feature 'one'.", error.message
     end
   end
 end

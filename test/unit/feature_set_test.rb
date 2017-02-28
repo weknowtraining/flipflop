@@ -105,18 +105,12 @@ describe Flipflop::FeatureSet do
       assert subject.feature(feature.key).frozen?
     end
 
-    it "should raise if feature with same key is added" do
+    it "should raise error with message if feature with same key is added" do
       subject.add(Flipflop::FeatureDefinition.new(:feature))
-      assert_raises Flipflop::FeatureError do
+      error = assert_raises Flipflop::FeatureError do
         subject.add(Flipflop::FeatureDefinition.new(:feature))
       end
-    end
-
-    it "should raise with message if feature with same key is added" do
-      subject.add(Flipflop::FeatureDefinition.new(:feature))
-      assert_raises Flipflop::FeatureError do
-        subject.add(Flipflop::FeatureDefinition.new(:feature))
-      end
+      assert_equal "Feature 'feature' already defined.", error.message
     end
   end
 
@@ -131,18 +125,12 @@ describe Flipflop::FeatureSet do
       assert subject.strategy(strategy.key).frozen?
     end
 
-    it "should raise if strategy with same key is added" do
+    it "should raise error with message if strategy with same key is added" do
       subject.use(NullStrategy.new)
-      assert_raises Flipflop::StrategyError do
+      error = assert_raises Flipflop::StrategyError do
         subject.use(NullStrategy.new)
       end
-    end
-
-    it "should raise with message if strategy with same key is added" do
-      subject.use(NullStrategy.new)
-      assert_raises Flipflop::StrategyError do
-        subject.use(NullStrategy.new)
-      end
+      assert_equal "Strategy 'null' (NullStrategy) already defined with identical options.", error.message
     end
   end
 

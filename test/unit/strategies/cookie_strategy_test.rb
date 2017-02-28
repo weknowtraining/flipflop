@@ -18,6 +18,10 @@ describe Flipflop::Strategies::CookieStrategy do
       assert_equal "cookie", subject.name
     end
 
+    it "should have title derived from name" do
+      assert_equal "Cookie", subject.title
+    end
+
     it "should have default description" do
       assert_equal "Stores features in a browser cookie. Applies to current user.",
         subject.description

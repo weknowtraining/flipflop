@@ -16,28 +16,31 @@ module Flipflop
     class FeaturesPresenter
       include Flipflop::Engine.routes.url_helpers
 
+      attr_reader :strategies, :grouped_features, :application_name
+
       def initialize(feature_set)
         @cache = {}
         @feature_set = feature_set
+
+        @strategies = @feature_set.strategies.reject(&:hidden?)
+        @grouped_features = @feature_set.features.group_by(&:group)
+
+        @application_name = Rails.application.class.parent_name.underscore.titleize
       end
 
-      def strategies
-        @feature_set.strategies.reject(&:hidden?)
-      end
-
-      def features
-        @feature_set.features
+      def grouped?
+        grouped_features.keys != [nil]
       end
 
       def status(feature)
         cache(nil, feature) do
-          status_to_s(@feature_set.enabled?(feature.key))
+          status_to_sym(@feature_set.enabled?(feature.key))
         end
       end
 
       def strategy_status(strategy, feature)
         cache(strategy, feature) do
-          status_to_s(strategy.enabled?(feature.key))
+          status_to_sym(strategy.enabled?(feature.key))
         end
       end
 
@@ -53,9 +56,9 @@ module Flipflop
         @cache[key] = yield
       end
 
-      def status_to_s(status)
-        return "on" if status == true
-        return "off" if status == false
+      def status_to_sym(status)
+        return :enabled if status == true
+        return :disabled if status == false
       end
     end
   end
