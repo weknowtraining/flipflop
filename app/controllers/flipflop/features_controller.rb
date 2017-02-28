@@ -6,7 +6,7 @@ module Flipflop
     include ActionView::Layouts
 
     # Allows overriding layout by inheriting from this controller.
-    layout false
+    layout "flipflop"
 
     def index
       @feature_set = FeaturesPresenter.new(FeatureSet.current)
