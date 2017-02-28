@@ -66,6 +66,12 @@ Flipflop.configure do
 
   # Enable features by default:
   feature :world_domination, default: true
+
+  # Group features together:
+  group :improved_design do
+    feature :improved_navigation
+    feature :improved_homepage
+  end
 end
 ```
 
