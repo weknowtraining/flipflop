@@ -148,6 +148,11 @@ class TestApp
     Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
     Flipflop::FeatureLoader.instance_variable_set(:@current, nil)
 
+    match = -> (path) { path.include?(File.expand_path("../..", __FILE__)) }
+    Rails.application.config.i18n.railties_load_path.reject!(&match)
+    Rails.application.config.i18n.load_path.reject!(&match)
+    I18n.load_path.reject!(&match)
+
     Rails.app_class.instance_variable_set(:@instance, nil) if defined?(Rails.app_class)
     Rails.instance_variable_set(:@application, nil)
     I18n::Railtie.instance_variable_set(:@i18n_inited, false)
