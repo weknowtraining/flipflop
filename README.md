@@ -285,6 +285,15 @@ class MyEngine < Rails::Engine
 end
 ```
 
+## Internationalization
+
+The dashboard is translatable. Make sure `I18n.locale` is set to the correct
+value in your `ApplicationController` or alternatively in
+`dashboard_access_filter`.
+
+Take a look at [the English translations](config/locales/en.yml) to see which
+keys should be present and translated in your locale file.
+
 ## Testing
 
 In your test environment, you typically want to keep your features. But to make
