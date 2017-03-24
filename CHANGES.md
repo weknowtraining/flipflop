@@ -1,3 +1,7 @@
+## 2.3.1
+
+* Fixed backwards compatibility of strategies controller. The incompatibility was introduced in 2.3.0. (@jcoyne)
+
 ## 2.3.0
 
 * Support for Rails API only apps.
