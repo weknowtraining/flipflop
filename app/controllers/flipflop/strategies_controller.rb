@@ -14,16 +14,13 @@ module Flipflop
 
     private
 
+    # Modeled after ActiveModel::Type::Boolean, but only returns boolean values
+    # (never nil) and checks for true values, because that's what earlier
+    # versions of Flipflop did.
+    ENABLE_VALUES = %w(1 on ON t T).to_set.freeze
+
     def enable?
-      if Rails::VERSION::MAJOR == 4
-        if Rails::VERSION::MINOR == 1
-          ActiveRecord::ConnectionAdapters::Column.value_to_boolean(params[:commit])
-        else
-          ActiveRecord::Type::Boolean.new.type_cast_from_user(params[:commit])
-        end
-      else
-        ActiveModel::Type::Boolean.new.cast(params[:commit])
-      end
+      ENABLE_VALUES.include?(params[:commit])
     end
 
     def feature_key
