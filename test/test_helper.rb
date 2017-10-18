@@ -110,6 +110,10 @@ class TestApp
       skip_turbolinks: true,
     ).invoke_all
 
+    # Remove bootsnap if present, this interferes with reloading apps.
+    boot_path = File.expand_path("../../" + path + "/config/boot.rb", __FILE__)
+    File.write(boot_path, File.read(boot_path).gsub("require 'bootsnap/setup'", ""))
+
     Flipflop::InstallGenerator.new([],
       quiet: true,
     ).invoke_all
