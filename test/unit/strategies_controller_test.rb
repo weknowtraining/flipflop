@@ -1,6 +1,14 @@
 require File.expand_path("../../test_helper", __FILE__)
 
 describe "Flipflop::StrategiesController" do
+  before do
+    @app = TestApp.new
+  end
+
+  after do
+    @app.unload!
+  end
+
   subject do
     Flipflop::StrategiesController.new
   end
