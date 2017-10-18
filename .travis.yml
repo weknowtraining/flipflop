@@ -1,35 +1,37 @@
 language: ruby
 rvm:
-- 2.4.0
-- 2.3.0
-- jruby-9.1.2.0
+- 2.4.2
+- 2.3.5
+- jruby-9.1.13.0
 - ruby-head
 - jruby-head
 env:
 - RAILS_VERSION=master
 - RAILS_VERSION=master RAILS_API_ONLY=1
+- RAILS_VERSION=5.1
+- RAILS_VERSION=5.1 RAILS_API_ONLY=1
 - RAILS_VERSION=5.0
 - RAILS_VERSION=5.0 RAILS_API_ONLY=1
 matrix:
   include:
-  - rvm: 2.3.0
+  - rvm: 2.3.5
     env: RAILS_VERSION=4.2
-  - rvm: 2.2.6
+  - rvm: 2.2.8
     env: RAILS_VERSION=4.2
-  - rvm: 2.1.9
+  - rvm: 2.1.10
     env: RAILS_VERSION=4.2
   - rvm: 2.0.0
     env: RAILS_VERSION=4.2
-  - rvm: 2.3.0
+  - rvm: 2.3.5
     env: RAILS_VERSION=4.1
-  - rvm: 2.2.6
+  - rvm: 2.2.8
     env: RAILS_VERSION=4.1
-  - rvm: 2.1.9
+  - rvm: 2.1.10
     env: RAILS_VERSION=4.1
   - rvm: 2.0.0
     env: RAILS_VERSION=4.1
   allow_failures:
-  - rvm: jruby-9.1.2.0
+  - rvm: jruby-9.1.13.0
   - rvm: ruby-head
   - rvm: jruby-head
 before_deploy: rake assets:compile
@@ -41,4 +43,4 @@ deploy:
   on:
     tags: true
     repo: voormedia/flipflop
-    ruby: 2.3.0
+    ruby: 2.3.5
