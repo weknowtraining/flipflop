@@ -1,13 +1,19 @@
 module Flipflop
   class FeatureError < StandardError
-    def initialize(feature, error)
-      super("Feature '#{feature}' #{error}.")
+    def initialize(key, error)
+      super("Feature '#{key}' #{error}.")
     end
   end
 
   class StrategyError < StandardError
-    def initialize(strategy, error)
-      super("Strategy '#{strategy}' #{error}.")
+    def initialize(key, error)
+      super("Strategy '#{key}' #{error}.")
+    end
+  end
+
+  class Callback < StandardError
+    def initialize(key, error)
+      super("Callback '#{key}' #{error}.")
     end
   end
 
@@ -70,19 +76,22 @@ module Flipflop
       end
     end
 
-    def enabled?(feature)
-      FeatureCache.current.fetch(feature) do
+    def enabled?(feature_key)
+      FeatureCache.current.fetch(feature_key) do
+        feature = feature(feature_key)
+
         result = @strategies.each_value.inject(nil) do |status, strategy|
           break status unless status.nil?
-          strategy.enabled?(feature)
+          strategy.enabled?(feature_key)
         end
-        result.nil? ? feature(feature).default : result
+
+        result.nil? ? feature.default : result
       end
     end
 
-    def feature(feature)
-      @features.fetch(feature) do
-        raise FeatureError.new(feature, "unknown")
+    def feature(feature_key)
+      @features.fetch(feature_key) do
+        raise FeatureError.new(feature_key, "unknown")
       end
     end
 
@@ -90,14 +99,28 @@ module Flipflop
       @features.values
     end
 
-    def strategy(strategy)
-      @strategies.fetch(strategy) do
-        raise StrategyError.new(strategy, "unknown")
+    def strategy(strategy_key)
+      @strategies.fetch(strategy_key) do
+        raise StrategyError.new(strategy_key, "unknown")
       end
     end
 
     def strategies
       @strategies.values
+    end
+
+    def switch!(feature_key, strategy_key, value)
+      strategy = strategy(strategy_key)
+      feature = feature(feature_key)
+
+      strategy.switch!(feature_key, value)
+    end
+
+    def clear!(feature_key, strategy_key)
+      strategy = strategy(strategy_key)
+      feature = feature(feature_key)
+
+      strategy.clear!(feature_key)
     end
   end
 end

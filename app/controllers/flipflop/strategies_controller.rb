@@ -3,12 +3,12 @@ module Flipflop
     include ActionController::RequestForgeryProtection
 
     def update
-      strategy.switch!(feature_key, enable?)
+      FeatureSet.current.switch!(feature_key, strategy_key, enable?)
       redirect_to(features_url)
     end
 
     def destroy
-      strategy.clear!(feature_key)
+      FeatureSet.current.clear!(feature_key, strategy_key)
       redirect_to(features_url)
     end
 
@@ -27,8 +27,8 @@ module Flipflop
       params[:feature_id].to_sym
     end
 
-    def strategy
-      FeatureSet.current.strategy(params[:id])
+    def strategy_key
+      params[:id]
     end
   end
 end

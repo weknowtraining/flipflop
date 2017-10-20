@@ -10,26 +10,27 @@ class Flipflop::InstallGenerator < Rails::Generators::Base
   end
 
   def configure_dashboard
-    comment = <<-RUBY
-# Replace with a lambda or method name defined in ApplicationController
-# to implement access control for the Flipflop dashboard.
-RUBY
+    app = tmpl("-> { head :forbidden }")
+    env_dev_test = tmpl("nil")
 
-    forbidden = <<-RUBY
-config.flipflop.dashboard_access_filter = -> { head :forbidden }
-RUBY
-
-    allowed = <<-RUBY
-config.flipflop.dashboard_access_filter = nil
-RUBY
-
-    environment(indent(comment + forbidden + "\n", 4).lstrip)
-    environment(indent(comment + allowed + "\n", 2).lstrip, env: [:development, :test])
+    environment(indent(app + "\n", 4).lstrip)
+    environment(indent(env_dev_test + "\n", 2).lstrip, env: [:development, :test])
   end
 
   private
 
+  def tmpl(access_filter)
+    return <<-RUBY
+# Before filter for Flipflop dashboard. Replace with a lambda or method name
+# defined in ApplicationController to implement access control.
+config.flipflop.dashboard_access_filter = #{access_filter}
+RUBY
+  end
+
   def indent(content, multiplier = 2)
+    # Don't fix indentation if Rails already does this (5.2+).
+    return content if respond_to?(:optimize_indentation, true)
+
     spaces = " " * multiplier
     content.each_line.map {|line| line.blank? ? line : "#{spaces}#{line}" }.join
   end

@@ -78,6 +78,11 @@ end
 This file is automatically reloaded in development mode. No need to restart
 your server after making changes.
 
+Feature definitions support these options:
+* `:default` – The feature's default value. This is the value of the feature if no strategy configures an explicit value. Defaults to `false`.
+* `:description` – An optional description of the feature. Displayed on the dashboard if present.
+* `:title` – An optional title of the feature. This defaults to a humanized version of the feature name. Displayed on the dashboard.
+
 ## Strategies
 
 The following strategies are provided:

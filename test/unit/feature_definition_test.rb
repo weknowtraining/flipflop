@@ -29,6 +29,11 @@ describe Flipflop::FeatureDefinition do
     it "should have no group" do
       assert_nil subject.group
     end
+
+    it "should have location" do
+      # Because we have no indirection via FeatureSet, the location is minitest.
+      assert_equal "instance_eval", subject.location.label
+    end
   end
 
   describe "with options" do
@@ -62,6 +67,27 @@ describe Flipflop::FeatureDefinition do
 
     it "should have specified group" do
       assert_equal :my_group, subject.group.key
+    end
+
+    it "should have location" do
+      # Because we have no indirection via FeatureSet, the location is minitest.
+      assert_equal "instance_eval", subject.location.label
+    end
+  end
+
+  describe "with unknown options" do
+    subject do
+      Flipflop::FeatureDefinition.new(:my_key,
+        unknown: "one",
+        other: "two",
+      )
+    end
+
+    it "should raise error with message" do
+      error = assert_raises Flipflop::FeatureError do
+        subject
+      end
+      assert_equal "Feature 'my_key' has unknown option :unknown, :other.", error.message
     end
   end
 end
