@@ -43,7 +43,7 @@ matrix:
   - rvm: jruby-9.1.13.0
   - rvm: ruby-head
   - rvm: jruby-head
-before_deploy: rake assets:compile
+before_deploy: bundle exec rake assets:compile
 deploy:
   provider: rubygems
   api_key:
