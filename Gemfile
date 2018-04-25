@@ -15,7 +15,7 @@ group :test do
   gem "fakeredis", require: false
   gem "sqlite3", ">= 1.3", platform: :ruby
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby,
-    github: "jruby/activerecord-jdbc-adapter", branch: "rails-5"
+    github: "jruby/activerecord-jdbc-adapter"
 
   gem "minitest", ">= 4.2"
   gem "capybara", ">= 2.6"
