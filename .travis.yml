@@ -1,6 +1,7 @@
 language: ruby
 cache: bundler
 rvm:
+- 2.5.0
 - 2.4.2
 - 2.3.5
 - jruby-9.1.13.0
@@ -9,6 +10,8 @@ rvm:
 env:
 - RAILS_VERSION=master
 - RAILS_VERSION=master RAILS_API_ONLY=1
+- RAILS_VERSION=5.2
+- RAILS_VERSION=5.2 RAILS_API_ONLY=1
 - RAILS_VERSION=5.1
 - RAILS_VERSION=5.1 RAILS_API_ONLY=1
 - RAILS_VERSION=5.0
