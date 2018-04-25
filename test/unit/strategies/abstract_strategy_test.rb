@@ -52,7 +52,10 @@ describe Flipflop::Strategies::AbstractStrategy do
         Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = 3
         assert_raises Flipflop::StrategyError do
           Thread.new {
-            Thread.current.report_on_exception = false
+            if Thread.current.respond_to?(:report_on_exception)
+              Thread.current.report_on_exception = false
+            end
+
             subject.send(:request)
           }.value
         end

@@ -1,3 +1,7 @@
+## 2.3.2
+
+* Add location of feature definition.
+
 ## 2.3.1
 
 * Fixed backwards compatibility of strategies controller. The incompatibility was introduced in 2.3.0. (@jcoyne)
