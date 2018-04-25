@@ -51,7 +51,10 @@ describe Flipflop::Strategies::AbstractStrategy do
       it "should raise if request is missing in thread" do
         Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = 3
         assert_raises Flipflop::StrategyError do
-          Thread.new { subject.send(:request) }.value
+          Thread.new {
+            Thread.current.report_on_exception = false
+            subject.send(:request)
+          }.value
         end
       end
     end

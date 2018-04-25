@@ -113,14 +113,14 @@ module Flipflop
       strategy = strategy(strategy_key)
       feature = feature(feature_key)
 
-      strategy.switch!(feature_key, value)
+      strategy.switch!(feature.key, value)
     end
 
     def clear!(feature_key, strategy_key)
       strategy = strategy(strategy_key)
       feature = feature(feature_key)
 
-      strategy.clear!(feature_key)
+      strategy.clear!(feature.key)
     end
   end
 end

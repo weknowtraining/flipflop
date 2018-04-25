@@ -145,7 +145,13 @@ class TestApp
 
     silence_stdout { ActiveRecord::Tasks::DatabaseTasks.create_current }
     ActiveRecord::Migration.verbose = false
-    ActiveRecord::Migrator.migrate(Rails.application.paths["db/migrate"].to_a)
+
+    if defined?(ActiveRecord::Migrator.migrate)
+      ActiveRecord::Migrator.migrate(Rails.application.paths["db/migrate"].to_a)
+    else
+      # Rails 5.2+
+      ActiveRecord::MigrationContext.new(Rails.application.paths["db/migrate"]).migrate
+    end
   end
 
   def unload!

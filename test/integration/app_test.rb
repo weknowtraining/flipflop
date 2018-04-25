@@ -16,17 +16,17 @@ describe Flipflop do
 
     describe "configuration" do
       it "should be added to dev" do
-        assert_match /^  config\.flipflop\.dashboard_access_filter = nil$/,
+        assert_match %r{^  config\.flipflop\.dashboard_access_filter = nil$},
           File.read("config/environments/development.rb")
       end
 
       it "should be added to test" do
-        assert_match /^  config\.flipflop\.dashboard_access_filter = nil$/,
+        assert_match %r{^  config\.flipflop\.dashboard_access_filter = nil$},
           File.read("config/environments/test.rb")
       end
 
       it "should be added to app" do
-        assert_match /^    config\.flipflop\.dashboard_access_filter = -> \{ head :forbidden \}$/,
+        assert_match %r{^    config\.flipflop\.dashboard_access_filter = -> \{ head :forbidden \}$},
           File.read("config/application.rb")
       end
     end
