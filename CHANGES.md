@@ -1,7 +1,7 @@
-## 2.3.2
+## 2.4.0
 
 * Add location of feature definition.
-* [breaking] Raise error for undefined feature or strategy keys. This breaking change accidentally was included in a patch release.
+* Raise error for undefined feature or strategy keys. This change can potentially break test cases that use dummy keys.
 
 ## 2.3.1
 
