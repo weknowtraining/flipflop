@@ -1,6 +1,7 @@
 ## 2.3.2
 
 * Add location of feature definition.
+* [breaking] Raise error for undefined feature or strategy keys. This breaking change accidentally was included in a patch release.
 
 ## 2.3.1
 
