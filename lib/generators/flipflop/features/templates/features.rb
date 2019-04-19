@@ -6,8 +6,10 @@ Flipflop.configure do
 
   # Other strategies:
   #
-  # strategy :query_string
+  # strategy :sequel
   # strategy :redis
+  #
+  # strategy :query_string
   # strategy :session
   #
   # strategy :my_strategy do |feature|

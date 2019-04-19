@@ -58,7 +58,7 @@ Features and strategies are declared in `config/features.rb`:
 Flipflop.configure do
   # Strategies will be used in the order listed here.
   strategy :cookie
-  strategy :active_record
+  strategy :active_record # or :sequel, :redis
   strategy :default
 
   # Basic feature declaration:
