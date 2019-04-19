@@ -25,7 +25,12 @@ module Flipflop
         @strategies = @feature_set.strategies.reject(&:hidden?)
         @grouped_features = @feature_set.features.group_by(&:group)
 
-        @application_name = Rails.application.class.module_parent_name.underscore.titleize
+        app_class = Rails.application.class
+        application_name = app_class.respond_to?(:module_parent_name) ?
+          app_class.module_parent_name :
+          app_class.parent_name
+
+        @application_name = application_name.underscore.titleize
       end
 
       def grouped?
