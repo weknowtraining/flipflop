@@ -35,6 +35,10 @@ matrix:
   - rvm: 2.0.0
     env: RAILS_VERSION=4.1
   exclude:
+  - rvm: 2.4.4
+    env: RAILS_VERSION=master
+  - rvm: 2.4.4
+    env: RAILS_VERSION=master RAILS_API_ONLY=1
   - rvm: 2.3.5
     env: RAILS_VERSION=master
   - rvm: 2.3.5
