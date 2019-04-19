@@ -1,3 +1,8 @@
+## 2.5.0
+
+* Add Sequel strategy. ActiveRecord/Sequel can be used side by side.
+* Rails 6 compatibility.
+
 ## 2.4.0
 
 * Add location of feature definition.
