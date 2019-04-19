@@ -13,7 +13,13 @@ group :test do
   gem "bootstrap", "= 4.0.0.alpha6", require: false
 
   gem "fakeredis", require: false
-  gem "sqlite3", "~> 1.3.6", platform: :ruby
+
+  if version == "master" || version >= "6"
+    gem "sqlite3", "~> 1.4.0", platform: :ruby
+  else
+    gem "sqlite3", "~> 1.3.6", platform: :ruby
+  end
+
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby,
     github: "jruby/activerecord-jdbc-adapter"
 
