@@ -4,7 +4,9 @@
 
 **Flipflop** provides a declarative, layered way of enabling and disabling
 application functionality at run-time. It is originally based on
-[Flip](https://github.com/pda/flip). Compared to the original gem **Flipflop** has:
+[Flip](https://github.com/pda/flip). **Flipflop** has the following features:
+* simple configuration
+* ease of use for developers
 * an improved dashboard
 * thread safety
 * better database performance due to per-request caching, enabled by default
@@ -21,7 +23,7 @@ application functionality at run-time. It is originally based on
 You can configure strategy layers that will evaluate if a feature is currently
 enabled or disabled. Available strategies are:
 * a per-feature default setting
-* database (with Active Record or Redis), to flipflop features site-wide for all users
+* database (with Active Record, Sequel, or Redis), to flipflop features site-wide for all users
 * cookie or session, to flipflop features for single users
 * query string parameters, to flipflop features occasionally (in development mode for example)
 * custom strategy code
@@ -29,6 +31,10 @@ enabled or disabled. Available strategies are:
 Flipflop has a dashboard interface that's easy to understand and use.
 
 [<img src="https://raw.githubusercontent.com/voormedia/flipflop/screenshots/dashboard.png" alt="Dashboard">](https://raw.githubusercontent.com/voormedia/flipflop/screenshots/dashboard.png)
+
+## Rails requirements
+
+This gem requires Rails 4, 5 or 6. Using an ORM layer is entirely optional. 
 
 ## Installation
 
