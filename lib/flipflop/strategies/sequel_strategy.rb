@@ -8,10 +8,11 @@ module Flipflop
 
         def define_feature_class
           return Flipflop::Feature if defined?(Flipflop::Feature)
-          model = Class.new(Sequel::Model(:flipflop_features)).tap do |model|
-            model.plugin(:update_or_create)
-            model.raise_on_save_failure = true
-          end
+
+          model = Class.new(Sequel::Model(:flipflop_features))
+          model.plugin(:timestamps, force: true, update_on_create: true)
+          model.raise_on_save_failure = true
+
           Flipflop.const_set(:Feature, model)
         end
       end
@@ -29,23 +30,27 @@ module Flipflop
       end
 
       def enabled?(feature)
-        find(feature).first.try(:enabled?)
+        find(feature).try(:enabled?)
       end
 
       def switch!(feature, enabled)
-        record = find(feature).find_or_new
+        record = find_or_new(feature)
         record.enabled = enabled
         record.save
       end
 
       def clear!(feature)
-        find(feature).first.try(:destroy)
+        find(feature).try(:destroy)
       end
 
       protected
 
+      def find_or_new(feature)
+        find(feature) || @class.new(key: feature.to_s)
+      end
+
       def find(feature)
-        @class.where(key: feature.to_s)
+        @class.where(key: feature.to_s).first
       end
     end
   end

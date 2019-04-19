@@ -8,6 +8,7 @@ module Flipflop
 
         def define_feature_class
           return Flipflop::Feature if defined?(Flipflop::Feature)
+
           model = Class.new(ActiveRecord::Base)
           Flipflop.const_set(:Feature, model)
         end

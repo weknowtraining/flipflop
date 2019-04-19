@@ -5,10 +5,6 @@ class ResultSet
     @key, @results = key, results
   end
 
-  def find_or_new
-    @results.first or MySq::Feature.new(@key, false)
-  end
-
   def first
     @results.first
   end
@@ -25,6 +21,14 @@ module MySq
     end
 
     alias_method :enabled?, :enabled
+
+    def initialize(key, value = false)
+      if key.kind_of?(Hash)
+        key.each { |k, v| self[k] = v.to_sym }
+      else
+        super
+      end
+    end
 
     def destroy
       MySq::Feature.results[key] = ResultSet.new(key)
