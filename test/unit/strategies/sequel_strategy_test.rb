@@ -5,8 +5,8 @@ class ResultSet
     @key, @results = key, results
   end
 
-  def first_or_initialize
-    @results.first or MyAr::Feature.new(@key, false)
+  def find_or_new
+    @results.first or MySq::Feature.new(@key, false)
   end
 
   def first
@@ -14,7 +14,7 @@ class ResultSet
   end
 end
 
-module MyAr
+module MySq
   class Feature < Struct.new(:key, :enabled)
     class << self
       attr_accessor :results
@@ -27,27 +27,27 @@ module MyAr
     alias_method :enabled?, :enabled
 
     def destroy
-      MyAr::Feature.results[key] = ResultSet.new(key)
+      MySq::Feature.results[key] = ResultSet.new(key)
     end
 
-    def save!
-      MyAr::Feature.results[key] = ResultSet.new(key, [self])
+    def save
+      MySq::Feature.results[key] = ResultSet.new(key, [self])
     end
   end
 end
 
-describe Flipflop::Strategies::ActiveRecordStrategy do
+describe Flipflop::Strategies::SequelStrategy do
   describe "with defaults" do
     subject do
-      Flipflop::Strategies::ActiveRecordStrategy.new(class: MyAr::Feature).freeze
+      Flipflop::Strategies::SequelStrategy.new(class: MySq::Feature).freeze
     end
 
     it "should have default name" do
-      assert_equal "active_record", subject.name
+      assert_equal "sequel", subject.name
     end
 
     it "should have title derived from name" do
-      assert_equal "Active record", subject.title
+      assert_equal "Sequel", subject.title
     end
 
     it "should have default description" do
@@ -65,8 +65,8 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
 
     describe "with enabled feature" do
       before do
-        MyAr::Feature.results = {
-          one: ResultSet.new(:one, [MyAr::Feature.new(:one, true)]),
+        MySq::Feature.results = {
+          one: ResultSet.new(:one, [MySq::Feature.new(:one, true)]),
         }
       end
 
@@ -87,8 +87,8 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
 
     describe "with disabled feature" do
       before do
-        MyAr::Feature.results = {
-          two: ResultSet.new(:two, [MyAr::Feature.new(:two, false)]),
+        MySq::Feature.results = {
+          two: ResultSet.new(:two, [MySq::Feature.new(:two, false)]),
         }
       end
 
@@ -109,7 +109,7 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
 
     describe "with unsaved feature" do
       before do
-        MyAr::Feature.results = {
+        MySq::Feature.results = {
           three: ResultSet.new(:three),
         }
       end
@@ -127,12 +127,12 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
 
   describe "with string class name" do
     subject do
-      Flipflop::Strategies::ActiveRecordStrategy.new(class: "MyAr::Feature").freeze
+      Flipflop::Strategies::SequelStrategy.new(class: "MySq::Feature").freeze
     end
 
     before do
-      MyAr::Feature.results = {
-        one: ResultSet.new(:one, [MyAr::Feature.new(:one, true)]),
+      MySq::Feature.results = {
+        one: ResultSet.new(:one, [MySq::Feature.new(:one, true)]),
       }
     end
 
@@ -144,12 +144,12 @@ describe Flipflop::Strategies::ActiveRecordStrategy do
 
   describe "with symbol class name" do
     subject do
-      Flipflop::Strategies::ActiveRecordStrategy.new(class: :"MyAr::Feature").freeze
+      Flipflop::Strategies::SequelStrategy.new(class: :"MySq::Feature").freeze
     end
 
     before do
-      MyAr::Feature.results = {
-        one: ResultSet.new(:one, [MyAr::Feature.new(:one, true)]),
+      MySq::Feature.results = {
+        one: ResultSet.new(:one, [MySq::Feature.new(:one, true)]),
       }
     end
 
