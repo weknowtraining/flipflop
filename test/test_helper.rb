@@ -140,9 +140,9 @@ class TestApp
     Rails.application.config.i18n.enforce_available_locales = false
     Rails.application.config.autoloader = :classic # Disable Zeitwerk in Rails 6+
 
-    active_record_options = Rails.application.config.active_record
-    if active_record_options.respond_to?(:sqlite3=) and active_record_options.sqlite3.nil?
-      active_record_options.sqlite3 = ActiveSupport::OrderedOptions.new
+    if ActiveRecord::Base.respond_to?(:sqlite3=)
+      # Avoid Rails 6+ deprecation warning
+      Rails.application.config.active_record.sqlite3 = ActiveSupport::OrderedOptions.new
     end
 
     if defined?(ActionView::Railtie::NULL_OPTION)

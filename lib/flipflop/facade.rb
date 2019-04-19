@@ -1,3 +1,5 @@
+require "forwardable"
+
 module Flipflop
   module Facade
     extend Forwardable
