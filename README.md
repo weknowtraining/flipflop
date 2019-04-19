@@ -8,7 +8,7 @@ application functionality at run-time. It is originally based on
 * an improved dashboard
 * thread safety
 * better database performance due to per-request caching, enabled by default
-* more strategies (Redis, query strings, sessions, custom code)
+* more strategies (Sequel, Redis, query strings, sessions, custom code)
 * more strategy options (cookie options, strategy names and descriptions, custom database models)
 * the ability to use the same strategy twice, with different options
 * configuration in a fixed location (`config/features.rb`) that is usable even if you don't use the database strategy
@@ -86,8 +86,8 @@ Feature definitions support these options:
 ## Strategies
 
 The following strategies are provided:
-* `:active_record` – Save feature settings in the database.
-    * `:class` – Provide the feature model. `Flipflop::Feature` by default (which uses the table `flipflop_features`). Honors `default_scope` when features are resolved or switched on/off.
+* `:active_record`/`:sequel` – Save feature settings in the database.
+    * `:class` – Provide the feature model. `Flipflop::Feature` by default (which is defined automatically and uses the table `flipflop_features`). The `ActiveRecord` version honors `default_scope` when features are resolved or switched on/off.
 * `:cookie` – Save feature settings in browser cookies for the current user.
     * `:prefix` – String prefix for all cookie names. Defaults to no prefix.
     * `:path` – The path for which the cookies apply. Defaults to the root of the application.
