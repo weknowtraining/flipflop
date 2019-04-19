@@ -100,7 +100,11 @@ class TestApp
       quiet: true,
       api: ENV["RAILS_API_ONLY"].to_i.nonzero?,
       skip_active_job: true,
+      skip_active_storage: true,
+      skip_action_cable: true,
+      skip_bootsnap: true,
       skip_bundle: true,
+      skip_puma: true,
       skip_gemfile: true,
       skip_git: true,
       skip_javascript: true,
@@ -128,11 +132,23 @@ class TestApp
     require "rails"
     require "flipflop/engine"
 
+    ActiveSupport::Dependencies.autoloaded_constants.clear
     load File.expand_path("../../#{path}/config/application.rb", __FILE__)
     load File.expand_path("../../#{path}/config/environments/test.rb", __FILE__)
     Rails.application.config.cache_classes = false
     Rails.application.config.action_view.raise_on_missing_translations = true
     Rails.application.config.i18n.enforce_available_locales = false
+    Rails.application.config.autoloader = :classic # Disable Zeitwerk in Rails 6+
+
+    if Rails.application.config.active_record.sqlite3.nil?
+      Rails.application.config.active_record.sqlite3 = ActiveSupport::OrderedOptions.new
+    end
+
+    if defined?(ActionView::Railtie::NULL_OPTION)
+      # Avoid Rails 6+ deprecation warning
+      Rails.application.config.action_view.finalize_compiled_template_methods = ActionView::Railtie::NULL_OPTION
+    end
+
     Rails.application.initialize!
 
     I18n.locale = :en

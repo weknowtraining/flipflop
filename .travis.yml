@@ -52,4 +52,4 @@ deploy:
   on:
     tags: true
     repo: voormedia/flipflop
-    ruby: 2.3.5
+    ruby: 2.5.0
