@@ -109,20 +109,24 @@ describe Flipflop::Configurable do
     end
 
     it "should raise error when strategy fails to load" do
-      env, ENV["RAILS_ENV"] = ENV["RAILS_ENV"], nil
+      rack_env, ENV["RACK_ENV"] = ENV["RACK_ENV"], nil
+      rails_env, ENV["RAILS_ENV"] = ENV["RAILS_ENV"], nil
       assert_raises "Oops" do
         subject.strategy(FailingStrategy)
       end
     ensure
-      ENV["RAILS_ENV"] = env
+      ENV["RACK_ENV"] = rack_env
+      ENV["RAILS_ENV"] = rails_env
     end
 
     it "should not raise error when strategy fails to load in test mode" do
-      env, ENV["RAILS_ENV"] = ENV["RAILS_ENV"], "test"
+      rack_env, ENV["RACK_ENV"] = ENV["RACK_ENV"], "test"
+      rails_env, ENV["RAILS_ENV"] = ENV["RAILS_ENV"], "test"
       assert_equal "WARNING: Unable to load Flipflop strategy FailingStrategy: Oops\n",
         capture_stderr { subject.strategy(FailingStrategy) }
     ensure
-      ENV["RAILS_ENV"] = env
+      ENV["RACK_ENV"] = rack_env
+      ENV["RAILS_ENV"] = rails_env
     end
   end
 end
