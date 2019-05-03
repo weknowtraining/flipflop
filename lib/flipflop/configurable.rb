@@ -32,6 +32,8 @@ module Flipflop
       end
 
       FeatureSet.current.use(strategy)
+    rescue StandardError => err
+      warn "Unable to load strategy #{strategy}: #{err}"
     end
   end
 end

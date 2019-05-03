@@ -1,3 +1,7 @@
+## 2.6.0
+
+* Failure to load strategies will result in a warning instead of an error. This should aid in running Rake tasks.
+
 ## 2.5.0
 
 * Add Sequel strategy. ActiveRecord/Sequel can be used side by side.
