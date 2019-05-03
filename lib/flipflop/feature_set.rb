@@ -28,7 +28,7 @@ module Flipflop
       private :new
     end
 
-    attr_reader :raise_strategy_errors
+    attr_accessor :raise_strategy_errors
 
     def initialize
       @raise_strategy_errors = (ENV["RACK_ENV"] || ENV["RAILS_ENV"]) != "test"

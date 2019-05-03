@@ -132,5 +132,12 @@ describe Flipflop::Configurable do
         ENV["RAILS_ENV"] = rails_env
       end
     end
+
+    it "should not raise error when strategy fails to load if suppressed" do
+      subject
+      Flipflop::FeatureSet.current.raise_strategy_errors = false
+      assert_equal "WARNING: Unable to load Flipflop strategy FailingStrategy: Oops\n",
+        capture_stderr { subject.strategy(FailingStrategy) }
+    end
   end
 end
