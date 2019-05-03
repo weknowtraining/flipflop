@@ -1,6 +1,6 @@
 ## 2.6.0
 
-* Failure to load strategies will result in a warning instead of an error. This should aid in running Rake tasks.
+* Failure to load strategies in test environments will result in a warning instead of an error. This should aid in running Rake tasks.
 
 ## 2.5.0
 

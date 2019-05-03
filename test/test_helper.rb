@@ -31,6 +31,20 @@ def create_request
   request
 end
 
+def capture_stdout
+  stdout, $stdout = $stdout, StringIO.new
+  yield rescue nil
+  stdout, $stdout = $stdout, stdout
+  stdout.string
+end
+
+def capture_stderr
+  stderr, $stderr = $stderr, StringIO.new
+  yield rescue nil
+  stderr, $stderr = $stderr, stderr
+  stderr.string
+end
+
 def reload_constant(name)
   ActiveSupport::Dependencies.remove_constant(name.to_s)
   path = ActiveSupport::Dependencies.search_for_file(name.to_s.underscore).sub!(/\.rb\z/, "")
@@ -162,7 +176,7 @@ class TestApp
   def migrate!
     ActiveRecord::Base.establish_connection
 
-    silence_stdout { ActiveRecord::Tasks::DatabaseTasks.create_current }
+    capture_stdout { ActiveRecord::Tasks::DatabaseTasks.create_current }
     ActiveRecord::Migration.verbose = false
 
     if defined?(ActiveRecord::Migrator.migrate)
@@ -174,6 +188,7 @@ class TestApp
   end
 
   def unload!
+    ENV["RAILS_ENV"] = nil
     Flipflop::Strategies::AbstractStrategy::RequestInterceptor.request = nil
     Flipflop::FeatureLoader.instance_variable_set(:@current, nil)
 
@@ -191,12 +206,6 @@ class TestApp
   end
 
   private
-
-  def silence_stdout
-    stdout, $stdout = $stdout, StringIO.new
-    yield rescue nil
-    $stdout = stdout
-  end
 
   def path
     "tmp/" + name

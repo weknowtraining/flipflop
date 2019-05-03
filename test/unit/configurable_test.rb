@@ -1,5 +1,12 @@
 require File.expand_path("../../test_helper", __FILE__)
 
+class FailingStrategy < Flipflop::Strategies::AbstractStrategy
+  def initialize(*)
+    raise "Oops"
+  end
+end
+
+
 describe Flipflop::Configurable do
   subject do
     Flipflop::FeatureSet.current.send(:initialize)
@@ -99,6 +106,20 @@ describe Flipflop::Configurable do
 
       assert_equal ["awesome"],
         Flipflop::FeatureSet.current.strategies.map(&:description)
+    end
+
+    it "should raise error when strategy fails to load" do
+      assert_raises "Oops" do
+        subject.strategy(FailingStrategy)
+      end
+    end
+
+    it "should not raise error when strategy fails to load in test mode" do
+      ENV["RAILS_ENV"] = "test"
+      assert_equal "WARNING: Unable to load Flipflop strategy FailingStrategy: Oops\n",
+        capture_stderr { subject.strategy(FailingStrategy) }
+    ensure
+      ENV["RAILS_ENV"] = nil
     end
   end
 end
