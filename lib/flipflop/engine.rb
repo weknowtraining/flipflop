@@ -15,10 +15,9 @@ module Flipflop
     config.flipflop = ActiveSupport::OrderedOptions.new
 
     initializer "flipflop.config" do |app|
-      if !(raise_errors = config.flipflop.raise_strategy_errors).nil?
-        p config.flipflop.raise_strategy_errors
-        FeatureSet.current.raise_strategy_errors = raise_errors
-      end
+      raise_errors = config.flipflop.raise_strategy_errors
+      raise_errors = (ENV["RACK_ENV"] || ENV["RAILS_ENV"]) != "test" if raise_errors.nil?
+      FeatureSet.current.raise_strategy_errors = raise_errors
     end
 
     initializer "flipflop.features_path" do |app|
