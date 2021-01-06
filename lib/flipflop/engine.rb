@@ -57,7 +57,9 @@ module Flipflop
 
     def to_prepare
       klass = defined?(ActiveSupport::Reloader) ? ActiveSupport::Reloader : ActionDispatch::Reloader
-      klass.to_prepare(&Proc.new)
+      klass.to_prepare do
+        # don't actually need to do anything
+      end
     end
   end
 end
